@@ -1,28 +1,15 @@
-== README
+== README for Disciples of Light & Dark
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+[ ![Codeship Status for disciplesofld/chess-project](https://codeship.com/projects/bdbcc440-9129-0133-6bf4-4e9fb4b2d645/status?branch=master)](https://codeship.com/projects/124538)
 
-Things you may want to cover:
+View [our chess project](http://chess-project.herokuapp.com) via Heroku as the production delivery platform.
 
-* Ruby version
+General notation for the current build in progress:
 
-* System dependencies
+* Ruby version - varies; machine dependent for each contributor
 
-* Configuration
+* Rails version - 4.1.9
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
+* PostgreSQL database
 
 * ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
