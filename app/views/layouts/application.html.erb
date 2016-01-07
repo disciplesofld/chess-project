@@ -5,16 +5,17 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
+  <meta name="viewport" content="initial-scale=1.0, width=device-width" />
 </head>
 <body>
 
 <!-- devise notice & alert from here -->
 <% if notice.present? %>
 	<p class="alert alert-info"><%= notice %></p>
-<% end %>	
+<% end %>
 <% if alert.present? %>
 	<p class="alert alert-danger"><%= alert %></p>
-<% end %>	
+<% end %>
 
 <!--devise notice & alert end -->
 
