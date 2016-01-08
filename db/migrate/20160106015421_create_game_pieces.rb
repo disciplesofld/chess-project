@@ -7,9 +7,7 @@ class CreateGamePieces < ActiveRecord::Migration
       t.integer :status
       t.integer :user_id
       t.integer :game_id
+      t.timestamps
     end
-
-    t.timestamps
   end
-end
 end
