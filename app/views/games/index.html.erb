@@ -1,0 +1,33 @@
+<div id="board" class="col-xs-10 col-xs-offset-1">
+
+	<!-- THIS WILL BE FOR STORING POSITION OF PIECES -->
+	<% positions = {} %>
+
+	<table>
+		<% ('a'..'h').reverse_each do |row| %>
+			<tr>
+				<th>
+					<%= row %>
+				</th>
+				<% (1..8).each do |col| %>
+					<td>
+						<%= row %>
+						<%= col %>
+					</td>
+				<% end %>
+			</tr>
+		<% end %>
+		<tfoot>
+			<tr>
+				<% (0..8).each do |num| %>
+					<th class="text-center foot">
+						<%= num if num != 0 %>
+					</th>
+				<% end %>
+			</tr>
+		</tfoot>
+	</table>
+
+</div>
+
+THIS PAGE CAN BE REMOVED ONCE EACH GAME CAN BE ACCESSED FROM DB!!!!
