@@ -4,6 +4,8 @@
 
 View [our chess project](http://chess-project.herokuapp.com) via Heroku as the production delivery platform.
 
+see [what we're up to](https://trello.com/b/HqHjivRc/kg-dec-tp) using Trello to organize our strategy.
+
 General notation for the current build in progress:
 
 * Ruby version - varies; machine dependent for each contributor
