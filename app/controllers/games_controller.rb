@@ -28,7 +28,9 @@ class GamesController < ApplicationController
 	def update
 		@game = Game.find(params[:id])
 		@game.update_attributes(game_params)
-		render :index
+		if @game.valid?
+			redirect_to game_path
+		end
 	end
 
 	private
