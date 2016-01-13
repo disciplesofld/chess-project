@@ -1,33 +1,39 @@
-<div id="board" class="col-xs-10 col-xs-offset-1">
-
-	<!-- THIS WILL BE FOR STORING POSITION OF PIECES -->
-	<% positions = {} %>
-
-	<table>
-		<% ('a'..'h').reverse_each do |row| %>
-			<tr>
-				<th>
-					<%= row %>
-				</th>
-				<% (1..8).each do |col| %>
-					<td>
-						<%= row %>
-						<%= col %>
-					</td>
+<div class="col-xs-4 col-xs-offset-1">
+	<div>
+		<h4>Games you are playing</h4>
+		<% @game.where.not(player_white_id: nil).find_each do |game| %>
+				<% if game.player_black_id == current_user.id || game.player_white_id == current_user.id %>
+					<%= game.name_for_game %><br />
+				<% else %>
+				<p>You don't have any games in progress, yet.
+					</p>
 				<% end %>
-			</tr>
 		<% end %>
-		<tfoot>
-			<tr>
-				<% (0..8).each do |num| %>
-					<th class="text-center foot">
-						<%= num if num != 0 %>
-					</th>
-				<% end %>
-			</tr>
-		</tfoot>
-	</table>
+	</div>
+	<br />
 
+	<div>
+		<h4>Start a new game?</h4>
+		<%= simple_form_for Game.new, :url => games_path do |f| %>
+			<%= f.input :player_black_id ,:as => :hidden, :input_html => { :value => current_user.id } %>
+			<%= f.input :player_white_id ,:as => :hidden, :value => nil %>
+			<div class="input-group">
+				<%= f.input :name_for_game, :label => false, :input_html => {:value => "Match vs player: #{current_user.email[/[^@]+/]}"}, :placeholder => "Match vs player: #{current_user.email[/[^@]+/]}", :readonly => true %>
+				<span class="input-group-btn"><%= f.submit "Create game", :class => 'btn btn-warning' %></span>
+			</div>
+		<% end %>
+	</div>
 </div>
 
-THIS PAGE CAN BE REMOVED ONCE EACH GAME CAN BE ACCESSED FROM DB!!!!
+<div class="col-xs-5 col-xs-offset-1">
+	<h4>Pick an opponent & join a game</h4>
+		<% @game.where(player_white_id: nil).where.not(player_black_id: current_user.id).find_each do |game| %>
+			<%= simple_form_for game do |f| %>
+				<div class="input-group">
+					<%= f.input :player_white_id ,:as => :hidden, :input_html => { :value => current_user.id } %>
+					<%= "Game #{game.id} - #{game.name_for_game}"  %>
+					<span class="input-group-btn"><%= f.submit "Join this game", :class => 'btn btn-warning' %></span>
+				</div>
+			<% end %>
+		<% end %>
+</div>
