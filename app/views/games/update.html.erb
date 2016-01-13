@@ -1,0 +1,33 @@
+<div id="board" class="col-xs-10 col-xs-offset-1">
+  <% positions = {} %>
+
+  <table>
+    <% ('a'..'h').to_enum.with_index.reverse_each do |letter, index| %>
+      <tr>
+        <th>
+          <%= letter %>
+        </th>
+        <% (0..7).each do |col| %>
+          <td>
+              <% @game_pieces.each do |piece| %>
+                <% if piece.x == col && piece.y == index %>
+                  <%= piece.type %>
+                <% end %>
+              <% end %>
+            <!--% row %-->
+            <% col %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+    <tfoot>
+      <tr>
+        <% (0..8).each do |num| %>
+          <th class="text-center foot">
+            <%= num if num != 0 %>
+          </th>
+        <% end %>
+      </tr>
+    </tfoot>
+  </table>
+</div>
