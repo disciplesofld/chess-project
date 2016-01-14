@@ -12,6 +12,8 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.find(params[:id])
+    @game.populate_pieces
+    @game_pieces = @game.game_pieces
   end
 
 
@@ -28,11 +30,11 @@ class GamesController < ApplicationController
   def update
     @game = Game.find(params[:id])
     @game.update_attributes(game_params)
-    @game.populate_pieces
-    @game.save
+    # @game.populate_pieces HIROMI
+    # @game.save  HIROMI
     if @game.valid?
-      @game_pieces = @game.game_pieces
-      #redirect_to game_path  # commented out to see if pieces is populated. change this later.
+      # @game_pieces = @game.game_pieces  HIROMI
+      redirect_to game_path  # commented out to see if pieces is populated. change this later.
     end
   end
 
