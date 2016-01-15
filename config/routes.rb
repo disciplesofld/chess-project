@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
   root 'static_pages#index'
   resources :games
+  get 'games/:id/:game_piece_id/:x/:y', to: 'games#select', as: 'select'
 
   # get 'game' => 'games#show'
 
