@@ -27,12 +27,7 @@ class GamesController < ApplicationController
     @game_piece = GamePiece.find(params[:game_piece_id])
   end
 
-  def edit
-    @game = Game.find(params[:id])
-    @game_pieces = @game.game_pieces
-    @game_piece = GamePiece.find(params[:id])
-    # render :index
-  end
+
 
   def update
     @game = Game.find(params[:id])
