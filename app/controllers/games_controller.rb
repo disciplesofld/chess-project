@@ -27,6 +27,13 @@ class GamesController < ApplicationController
     @game_piece = GamePiece.find(params[:game_piece_id])
   end
 
+  def move
+    @game = Game.find(params[:id])
+    @game_pieces = @game.game_pieces
+    @game_piece = GamePiece.find(params[:game_piece_id])
+    @game_piece.update(params[:new_x], params[:new_y])
+  end
+
 
 
   def update
