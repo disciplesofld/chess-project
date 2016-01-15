@@ -31,7 +31,9 @@ class GamesController < ApplicationController
     @game = Game.find(params[:id])
     @game_pieces = @game.game_pieces
     @game_piece = GamePiece.find(params[:game_piece_id])
-    @game_piece.update(params[:new_x], params[:new_y])
+    # pulls new_x and new_y from selected square and uses it to update the piece
+    @game_piece.move_piece(params[:new_x], params[:new_y])
+    redirect_to game_path(@game)
   end
 
 
