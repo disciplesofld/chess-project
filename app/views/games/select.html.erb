@@ -9,13 +9,20 @@
         </th>
         <% (0..7).each do |col| %>
           <td>
+          	<% if @game_piece.x == col && @game_piece.y == index %>
+          		<div class="selected">
+          			<%= @game_piece.type %>
+          		</div>
+          	<% else %>
               <% @game_pieces.each do |game_piece| %>
                 <% if game_piece.x == col && game_piece.y == index %>
-                  <%= link_to "#{game_piece.type}", select_path(:game_piece_id => game_piece, :x => game_piece.x, :y => game_piece.y) %>
+                  <%= game_piece.type %>
                 <% end %>
               <% end %>
-            <!--% row %-->
-            <% col %>
+
+              <!--% row %-->
+              <% col %>
+            <% end%>
           </td>
         <% end %>
       </tr>
