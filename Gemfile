@@ -9,7 +9,7 @@ gem 'rails', '4.1.9'
 # Use postgresql as the database for Active Record
 gem 'pg'
 
-
+gem 'pry'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Use CoffeeScript for .js.coffee assets and views

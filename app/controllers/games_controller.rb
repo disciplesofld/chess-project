@@ -27,20 +27,6 @@ class GamesController < ApplicationController
     @game_piece = GamePiece.find(params[:game_piece_id])
   end
 
-
-
-  def update
-    @game = Game.find(params[:id])
-    @game.update_attributes(game_params)
-    @game.populate_pieces!
-    # @game.save
-    if @game.valid?
-      @game_pieces = @game.game_pieces
-      redirect_to game_path  # commented out to see if pieces is populated. change this later.
-    end
-  end
-
-
   private
 
   def game_params
