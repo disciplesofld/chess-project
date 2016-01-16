@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   root 'static_pages#index'
   resources :games
   get 'games/:id/:game_piece_id/:x/:y', to: 'games#select', as: 'select'
-  put 'games/:id/:game_piece_id/:new_x/:new_y', to: 'games#move', as: 'move'
+  post 'games/:id/:game_piece_id/:new_x/:new_y', to: 'games#move', as: 'move'
 
   # get 'game' => 'games#show'
 

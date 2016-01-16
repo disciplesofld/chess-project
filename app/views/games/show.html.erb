@@ -1,6 +1,6 @@
 <div id="board" class="col-xs-10 col-xs-offset-1">
   <% positions = {} %>
-
+show
   <table>
     <% ('a'..'h').to_enum.with_index.reverse_each do |letter, index| %>
       <tr>
@@ -9,7 +9,6 @@
         </th>
         <% (0..7).each do |col| %>
           <td>
-            <%= link_to '', select_path(:new_x => x, :new_y => y) %>
               <% @game_pieces.each do |game_piece| %>
                 <% if game_piece.x == col && game_piece.y == index %>
                   <%= link_to "#{game_piece.type}", select_path(:game_piece_id => game_piece, :x => game_piece.x, :y => game_piece.y) %>
