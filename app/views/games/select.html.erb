@@ -9,11 +9,11 @@
         </th>
         <% (0..7).each do |col| %>
           <td>
-            <% if @game_piece.x == col && @game_piece.y == index %>
-              <div class="selected">
-                <%= @game_piece.type %>
-              </div>
-            <% else %>
+          	<% if @game_piece.x == col && @game_piece.y == index %>
+          		<div class="selected">
+          			<%= @game_piece.type %>
+          		</div>
+          	<% else %>
               <% @game_pieces.each do |game_piece| %>
                 <% if game_piece.x == col && game_piece.y == index %>
                   <%= game_piece.type %>
@@ -38,3 +38,4 @@
     </tfoot>
   </table>
 </div>
+
