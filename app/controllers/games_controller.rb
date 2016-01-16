@@ -12,8 +12,9 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.find(params[:id])
+    # add the following
+    @game_pieces = @game.game_pieces
   end
-
 
   def create
     @game = Game.create(game_params)
@@ -32,8 +33,39 @@ class GamesController < ApplicationController
     @game.save
     if @game.valid?
       @game_pieces = @game.game_pieces
-      #redirect_to game_path  # commented out to see if pieces is populated. change this later.
+      #comment the following line for 'move' test
+      redirect_to game_path
     end
+    # uncomment these for 'move' test
+    #@game_piece = GamePiece.where(game_id: [@game.id]).last #dummy value
+    #new_x = 5 # test value = 5
+    #new_y = 5 # test value = 5
+    #@game_piece.move_piece(new_x, new_y) # testing to see if a piece moves to (5, 5)
+    #@game_piece.save
+
+  end
+
+  def select
+    @game = Game.find(params[:id])
+    @x = params[:x]
+    @y = params[:y]
+  end
+
+  def move
+    @game = Game.find(params[:id])
+    #@game_piece = GamePiece.where(game_id: [@game.id]).last #dummy value
+    @game_piece = GamePiece.where(id: 3102).last
+    @new_x = 1 # test value = 5
+    @new_y = 7 # test value = 5
+    if !@game.is_obstructed?(@game_piece, @new_x, @new_y)
+      @game_piece.move_piece(@new_x, @new_y) # testing to see if a piece moves to (5, 5)
+      @game_piece.save
+    else
+      # could have a message like the following?
+      #flash[:notice] = "Obstructed!"
+    end
+
+    redirect_to game_path
   end
 
   private
