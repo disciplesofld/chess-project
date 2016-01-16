@@ -2,10 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
   root 'static_pages#index'
   resources :games
-  #get 'games/:id/new_x/new_y', to: 'games#select', as: 'select'
-  #put 'games/:id/new_x/new_y', to: 'games#move', as: 'move'
-  get 'games/:id/:x/:y', to: 'games#select', as: 'select'
-  post 'games/:id/:x/:y', to: 'games#move', as: 'move'
+  get 'games/:id/:game_piece_id/:x/:y', to: 'games#select', as: 'select'
 
   # get 'game' => 'games#show'
 

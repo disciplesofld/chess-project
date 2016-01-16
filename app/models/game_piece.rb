@@ -5,5 +5,4 @@ class GamePiece < ActiveRecord::Base
   def move_piece(new_x, new_y)
     self.update_attributes(:x => new_x, :y => new_y)
   end
-
 end

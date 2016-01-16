@@ -1,6 +1,40 @@
-<h1>Piece is selected</h1>
+<div id="board" class="col-xs-10 col-xs-offset-1">
+  <% positions = {} %>
 
-<%= simple_form_for move_path(:x => 1, :y => 7) do |f| %>
+  <table>
+    <% ('a'..'h').to_enum.with_index.reverse_each do |letter, index| %>
+      <tr>
+        <th>
+          <%= letter %>
+        </th>
+        <% (0..7).each do |col| %>
+          <td>
+            <% if @game_piece.x == col && @game_piece.y == index %>
+              <div class="selected">
+                <%= @game_piece.type %>
+              </div>
+            <% else %>
+              <% @game_pieces.each do |game_piece| %>
+                <% if game_piece.x == col && game_piece.y == index %>
+                  <%= game_piece.type %>
+                <% end %>
+              <% end %>
 
-    <%= f.submit 'Move', :class => 'btn btn-primary' %>
-<% end %>
+              <!--% row %-->
+              <% col %>
+            <% end%>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+    <tfoot>
+      <tr>
+        <% (0..8).each do |num| %>
+          <th class="text-center foot">
+            <%= num if num != 0 %>
+          </th>
+        <% end %>
+      </tr>
+    </tfoot>
+  </table>
+</div>
