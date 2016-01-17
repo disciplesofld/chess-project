@@ -1,9 +1,7 @@
 <div id="board" class="col-xs-10 col-xs-offset-1">
-
-  <!-- THIS WILL BE FOR STORING POSITION OF PIECES -->
   <% positions = {} %>
 
-   <table>
+  <table>
     <% ('a'..'h').to_enum.with_index.reverse_each do |letter, index| %>
       <tr>
         <th>
@@ -11,9 +9,9 @@
         </th>
         <% (0..7).each do |col| %>
           <td>
-              <% @game_pieces.each do |piece| %>
-                <% if piece.x == col && piece.y == index %>
-                  <%= piece.type%><%= piece.id %>
+              <% @game_pieces.each do |game_piece| %>
+                <% if game_piece.x == col && game_piece.y == index %>
+                  <%= link_to "#{game_piece.type}", select_path(:game_piece_id => game_piece, :x => game_piece.x, :y => game_piece.y) %>
                 <% end %>
               <% end %>
             <!--% row %-->
@@ -33,9 +31,6 @@
     </tfoot>
   </table>
 </div>
-
-<%= link_to 'Move a Piece', select_path(:x => 1, :y => 7) %>
-
 
 
 
