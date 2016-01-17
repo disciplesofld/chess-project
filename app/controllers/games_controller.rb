@@ -3,18 +3,12 @@ class GamesController < ApplicationController
 
   def index
     @game = Game.all
-    # if @game.present?
-    #   redirect_to game_path(@game)
-    # else
-    #   render :show
-    # end
   end
 
   def show
     @game = Game.find(params[:id])
     @game_pieces = @game.game_pieces
   end
-
 
   def create
     @game = Game.create(game_params)
@@ -27,16 +21,13 @@ class GamesController < ApplicationController
     @game_piece = GamePiece.find(params[:game_piece_id])
   end
 
-
-
   def update
     @game = Game.find(params[:id])
     @game.update_attributes(game_params)
     @game.populate_pieces!
-    # @game.save
     if @game.valid?
       @game_pieces = @game.game_pieces
-      redirect_to game_path  # commented out to see if pieces is populated. change this later.
+      redirect_to game_path
     end
   end
 
