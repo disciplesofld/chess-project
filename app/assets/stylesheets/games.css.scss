@@ -17,9 +17,9 @@ tr:nth-child(even) td:nth-child(even) {
 }
 
 td {
-	width: 110px;
-	height: 110px;
-	border: 2px solid;
+	width: 90px;
+	height: 90px;
+	border: 1.5px solid;
 	border-color: #f4ebe9 #988b6d #988b6d #f4ebe9;
 }
 
@@ -28,9 +28,9 @@ th {
 }
 
 .foot {
-	padding-top: 8px;
+	padding-top: 2px;
 }
 
 tfoot {
-	border-right: 2px white solid;
+	border-right: 1px white solid;
 }

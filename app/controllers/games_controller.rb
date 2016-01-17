@@ -1,4 +1,5 @@
 class GamesController < ApplicationController
+
   before_action :authenticate_user!
 
   def index
@@ -15,10 +16,9 @@ class GamesController < ApplicationController
     redirect_to games_path
   end
 
-  def select
+  def edit
     @game = Game.find(params[:id])
-    @game_pieces = @game.game_pieces
-    @game_piece = GamePiece.find(params[:game_piece_id])
+    # render :index
   end
 
   def update
@@ -28,9 +28,31 @@ class GamesController < ApplicationController
     if @game.valid?
       @game_pieces = @game.game_pieces
       redirect_to game_path
+
     end
   end
 
+  def select
+    @game = Game.find(params[:id])
+    @game_pieces = @game.game_pieces
+    #game_piece = GamePiece.where(game_id: [@game.id]).last #dummy value
+    @game_piece = GamePiece.find(params[:game_piece_id])
+    #@x = params[:x]
+    #@y = params[:y]
+  end
+
+  def move
+    @game = Game.find(params[:id])
+    @game_pieces = @game.game_pieces
+    #@game_piece = GamePiece.where(game_id: [@game.id]).last #dummy value
+    #@new_x = 5 # test value = 5
+    #@new_y = 5 # test value = 5
+    #@game_piece.move_piece(@new_x, @new_y) # testing to see if a piece moves to (5, 5)
+    @game_piece = GamePiece.find(params[:game_piece_id])
+    @game_piece.move_piece(params[:new_x], params[:new_y])
+    @game_piece.save
+    redirect_to game_path
+  end
 
   private
 
