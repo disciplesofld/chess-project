@@ -11,7 +11,6 @@
           <td>
               <% @game_pieces.each do |game_piece| %>
                 <% if game_piece.x == col && game_piece.y == index %>
-                  <!--%= link_to "#{game_piece.type}", select_path(:x => 5, :y => 5) %-->
                   <%= link_to "#{game_piece.type}", select_path(:game_piece_id => game_piece, :x => game_piece.x, :y => game_piece.y) %>
                 <% end %>
               <% end %>
@@ -32,4 +31,3 @@
     </tfoot>
   </table>
 </div>
-

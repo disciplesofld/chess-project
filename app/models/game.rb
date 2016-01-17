@@ -20,6 +20,8 @@ class Game < ActiveRecord::Base
     #
     current_x = gamepiece.x
     current_y = gamepiece.y
+    new_x = new_x.to_i
+    new_y = new_y.to_i
     team_id = gamepiece.user_id
 
     # return true means there is obstruction in movement --> that means bad
@@ -78,7 +80,7 @@ class Game < ActiveRecord::Base
     # x1+1 to exclude x1 point.  Using ... to exclude x2
     x_array = ((x1+1)...x2).map {|i| i}
     game_pieces.each do |game_piece|
-      if x_array.include?(game_piece.x)
+      if x_array.include?(game_piece.x) && game_piece.y == current_y
         return false  # false means horizontal_move is NOT ok
       end
     end
@@ -96,7 +98,7 @@ class Game < ActiveRecord::Base
     # there is an obstruction.
     y_array = ((y1+1)...y2).map {|i| i}
     game_pieces.each do |game_piece|
-      if y_array.include?(game_piece.y)
+      if y_array.include?(game_piece.y) && game_piece.x == current_x
         return false  # false means horizontal_move is NOT ok
       end
     end
