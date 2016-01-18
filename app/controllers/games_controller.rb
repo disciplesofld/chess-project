@@ -1,4 +1,5 @@
 class GamesController < ApplicationController
+
   before_action :authenticate_user!
 
   def index
@@ -15,12 +16,6 @@ class GamesController < ApplicationController
     redirect_to games_path
   end
 
-  def select
-    @game = Game.find(params[:id])
-    @game_pieces = @game.game_pieces
-    @game_piece = GamePiece.find(params[:game_piece_id])
-  end
-
   def update
     @game = Game.find(params[:id])
     @game.update_attributes(game_params)
@@ -31,6 +26,25 @@ class GamesController < ApplicationController
     end
   end
 
+  def select
+    @game = Game.find(params[:id])
+    @game_pieces = @game.game_pieces
+    @game_piece = GamePiece.find(params[:game_piece_id])
+  end
+
+  def move
+    @game = Game.find(params[:id])
+    @game_pieces = @game.game_pieces
+    @game_piece = GamePiece.find(params[:game_piece_id])
+    if !@game.is_obstructed?(@game_piece, params[:new_x], params[:new_y])
+      @game_piece.move_piece(params[:new_x], params[:new_y])
+      @game_piece.save
+      #redirect_to game_path
+    else # the piece is obstructed
+      flash[:notice] = "The piece is obstructed!"
+    end
+    redirect_to game_path
+  end
 
   private
 
