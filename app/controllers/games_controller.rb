@@ -37,8 +37,11 @@ class GamesController < ApplicationController
     @game_pieces = @game.game_pieces
     @game_piece = GamePiece.find(params[:game_piece_id])
     if !@game.is_obstructed?(@game_piece, params[:new_x], params[:new_y])
-      @game_piece.move_piece(params[:new_x], params[:new_y])
-      @game_piece.save
+      if @game_piece.move_piece(params[:new_x], params[:new_y])
+        @game_piece.save
+      else
+        flash[:notice] = "Invalid move"
+      end
       #redirect_to game_path
     else # the piece is obstructed
       flash[:notice] = "The piece is obstructed!"
