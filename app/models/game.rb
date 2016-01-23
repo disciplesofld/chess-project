@@ -122,7 +122,7 @@ class Game < ActiveRecord::Base
       two_d_array = create_two_d_array_for_diagonal_check(current_x-1, current_y-1, new_x, current_x-1, -1, -1, two_d_array)
     end
 
-    # this loop checks all game_piece to see if there is an obstrucle.
+    # this loop checks all game_piece to see if there is an obstacle.
     found_match = false
     game_pieces.each do |game_piece|
       piece_ary = [game_piece.x, game_piece.y]

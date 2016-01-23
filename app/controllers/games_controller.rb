@@ -36,10 +36,13 @@ class GamesController < ApplicationController
     @game = Game.find(params[:id])
     @game_pieces = @game.game_pieces
     @game_piece = GamePiece.find(params[:game_piece_id])
-    if !@game.is_obstructed?(@game_piece, params[:new_x], params[:new_y])
-      @game_piece.move_piece(params[:new_x], params[:new_y])
-      @game_piece.save
-      #redirect_to game_path
+    if !@game.is_obstructed?(@game_piece, params[:new_x], params[:new_y]) # PUT THIS ACCESS IN ALL PIECE TYPE MODELS!!!!
+      if @game_piece.move_piece(params[:new_x], params[:new_y]) # SET THIS TO RECEIVE BOOL
+        @game_piece.save
+      else
+        flash[:notice] = "Not a valid move for #{game_piece.type}"
+      end
+
     else # the piece is obstructed
       flash[:notice] = "The piece is obstructed!"
     end
