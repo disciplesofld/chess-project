@@ -10,7 +10,7 @@ module KG
   end
 
   class GameTest < ActiveSupport::TestCase
-    test "the factory can create a user" do
+    test "the factory can create a game" do
       g = FactoryGirl.create(:game)
       p g
       assert g
