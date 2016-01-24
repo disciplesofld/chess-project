@@ -13,10 +13,20 @@ class Game < ActiveRecord::Base
     end
   end
 
+  def is_obstructed?(start_x, start_y, dest_x, dest_y)
+    if start_y == dest_y && start_x != dest_x
+      # horizontal
+    elsif start_x == dest_x && start_y != dest_y
+      # vertical
+    elsif (dest_x - start_x).abs == (dest_y - start_y).abs
+      # diagonal
+    end
+  end
+
   def is_obstructed?(gamepiece, new_x, new_y)
     # from game_controller.rb, this should probably be called :
     # if !@game.is_obstructed?(@game_piece, @new_x, @new_y)
-    #   @game_piece.move_piece(@new_x, @new_y) <- move only if it is NOT obstructed
+    #   @game_piece.move_to(@new_x, @new_y) <- move only if it is NOT obstructed
     #
     current_x = gamepiece.x
     current_y = gamepiece.y

@@ -1,6 +1,6 @@
 class Queen < GamePiece
 
-  def move_piece(new_x, new_y)
+  def move_to(new_x, new_y)
     current_x = self.x
     current_y = self.y
     next_x = new_x.to_i
