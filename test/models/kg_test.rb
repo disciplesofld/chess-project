@@ -1,5 +1,6 @@
 require 'test_helper'
 
+# rake test test/models/kg_test.rb
 module KG
   class UserTest < ActiveSupport::TestCase
     test "the factory can create a user" do
