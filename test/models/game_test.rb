@@ -15,7 +15,7 @@ class GameTest < ActiveSupport::TestCase
   #      4. assert that the new user is not already in the game
   #      5. have that user join the game
   #      6. return true is user is in the game
-  test "second user can view game to join" true do
+  test "second user can view game to join" do
     started_game = FactoryGirl.create(:game)
     Game.where(player_white_id: 0).find_each do |game|
       return joinable_game = game

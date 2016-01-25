@@ -13,14 +13,87 @@ class Game < ActiveRecord::Base
     end
   end
 
-  def is_obstructed?(start_x, start_y, dest_x, dest_y)
+  def add_piece(piece)
+    piece.game_id = self.id
+    piece.save
+    game_pieces << piece
+  end
+
+  # - check for obstructions between a piece and its requested destination.
+  # - along the path to the destination, any piece is an obstruction.
+  # - a piece can only be obstructed at its destination by a friendly piece because
+  #   enemy pieces can be taken.
+  def is_obstructed_new?(piece, dest_x, dest_y)
+    return true if destination_is_obstructed?(piece, dest_x, dest_y)
+
+    start_x = piece.x
+    start_y = piece.y
+
     if start_y == dest_y && start_x != dest_x
       # horizontal
+      return path_is_obs_horizontal(start_x, dest_x, piece.y)
     elsif start_x == dest_x && start_y != dest_y
       # vertical
+      return path_is_obs_vertical(start_y, dest_y, piece.x)
     elsif (dest_x - start_x).abs == (dest_y - start_y).abs
       # diagonal
+      return path_is_obs_diagonal(start_x, dest_x, start_y, dest_y)
+    else
+      # unknown move type, can't check
+      return false
     end
+  end
+
+  def destination_is_obstructed?(piece, dest_x, dest_y)
+    # check final position, only blocked if friendly piece is there
+    blocker = game_pieces.find_by_x_and_y(dest_x, dest_y)
+    return blocker.present? && blocker.user_id == piece.user_id
+  end
+
+  def path_is_obs_horizontal(start_x, dest_x, y)
+    dx = dest_x - start_x
+    step_x = dx / dx.abs
+    start_x = start_x + step_x  # don't check this piece's position
+    dest_x = dest_x - step_x    # don't check the final position
+
+    start_x.step(dest_x, step_x) do |x|
+      blocker = game_pieces.where(x: x, y: y)
+      return true if blocker.present?
+    end
+
+    false
+  end
+
+  def path_is_obs_vertical(start_y, dest_y, x)
+    dy = dest_y - start_y
+    step_y = dy / dy.abs
+    start_y = start_y + step_y
+    dest_y = dest_y - step_y
+
+    start_y.step(dest_y, step_y) do |y|
+      blocker = game_pieces.where(x: x, y: y)
+      return true if blocker.present?
+    end
+
+    false
+  end
+
+  def path_is_obs_diagonal(start_x, dest_x, start_y, dest_y)
+    dx = dest_x - start_x
+    step_x = dx / dx.abs
+    start_x = start_x + step_x  # don't check this piece's position
+    dest_x = dest_x - step_x    # don't check the final position
+
+    dy = dest_y - start_y
+    step_y = dy / dy.abs
+    y = start_y + step_y
+    start_x.step(dest_x, step_x) do |x|
+      blocker = game_pieces.where(x: x, y: y)
+      return true if blocker.present?
+      y += step_y
+    end
+
+    false
   end
 
   def is_obstructed?(gamepiece, new_x, new_y)

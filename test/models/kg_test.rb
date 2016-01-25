@@ -24,5 +24,44 @@ module KG
         assert piece.alive?
       end
     end
+
+    test 'is_obstructed vertical' do
+      game = FactoryGirl.create(:game)
+      wid = game.player_white.id
+
+      wr = Rook.new(user_id: wid, x: 0, y: 0)
+      game.add_piece(wr)
+      wp = Pawn.new(user_id: wid, x: 0, y: 2)
+      game.add_piece(wp)
+
+      obs = game.is_obstructed_new?(wr, 0, 6)
+      assert obs
+    end
+
+    test 'is_obstructed horizontal (at destination)' do
+      game = FactoryGirl.create(:game)
+      wid = game.player_white.id
+
+      wr = Rook.new(user_id: wid, x: 0, y: 0)
+      game.add_piece(wr)
+      wp = Knight.new(user_id: wid, x: 6, y: 0)
+      game.add_piece(wp)
+
+      obs = game.is_obstructed_new?(wr, 6, 0)
+      assert obs
+    end
+
+    test 'is_obstructed diagonal' do
+      game = FactoryGirl.create(:game)
+      wid = game.player_white.id
+
+      wr = Bishop.new(user_id: wid, x: 2, y: 0)
+      game.add_piece(wr)
+      wp = Pawn.new(user_id: wid, x: 3, y: 1)
+      game.add_piece(wp)
+
+      obs = game.is_obstructed_new?(wr, 5, 3)
+      assert obs
+    end
   end
 end
