@@ -14,15 +14,13 @@ class Game < ActiveRecord::Base
   end
 
   def add_piece(piece)
-    piece.game_id = self.id
-    piece.save
     game_pieces << piece
   end
 
   # - check for obstructions between a piece and its requested destination.
   # - along the path to the destination, any piece is an obstruction.
   # - a piece can only be obstructed at its destination by a friendly piece because
-  #   enemy pieces can be taken.
+  #   enemy pieces can be captured.
   def is_obstructed_new?(piece, dest_x, dest_y)
     return true if destination_is_obstructed?(piece, dest_x, dest_y)
 
@@ -139,9 +137,7 @@ class Game < ActiveRecord::Base
         return true
       end
     end
-
     return false
-
   end
 
   def is_occupied_by_teammate?(current_x, current_y, new_x, new_y, team_id, gamepiece_id)
