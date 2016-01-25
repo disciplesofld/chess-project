@@ -1,15 +1,20 @@
 require 'test_helper'
 
 class GameTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
-
   test "user can start game" do
     started_game = FactoryGirl.create(:game)
     assert started_game.save  # persisted?
   end
 
+  # NOTE this test is not really testing whether the second user can join a game.
+  #      it is really just checking a (previously) hard-coded condition. (same goes for previous test)
+  #      to rewrite it, here is some pseudo-code
+  #      1. create a user
+  #      2. create a game with only that user as a player
+  #      3. create a new user
+  #      4. assert that the new user is not already in the game
+  #      5. have that user join the game
+  #      6. return true is user is in the game
   test "second user can view game to join" do
     started_game = FactoryGirl.create(:game)
     Game.where(player_white_id: 0).find_each do |game|

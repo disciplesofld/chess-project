@@ -9,7 +9,7 @@ class GamePieceTest < ActiveSupport::TestCase
     game.game_pieces << Queen.new(x: x_1, y: y_1, type: "Queen", status: 1, game_id: 1, user_id: 1)
     gamepiece = Queen.first
 
-    return gamepiece.move_piece(new_x, new_y)
+    return gamepiece.move_to(new_x, new_y)
   end
 
   test "Queen can go to horizontal" do
