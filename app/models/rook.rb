@@ -6,11 +6,9 @@ class Rook < GamePiece
 		move_x = new_x.to_i
 		move_y = new_y.to_i
 
-		# self.x Column index
-		# self.y Row index (reversed: bottom-to-top)
-		# Only (vertically) || only (horizontally)
+		# self.x = Column index; self.y = Row index (reversed: bottom-to-top)
+		# Moves only (vertically) || only (horizontally)
 		if ((self.x == move_x) && (self.y > move_y || self.y < move_y)) || ((self.y == move_y) && (self.x > move_x || self.x < move_x))
-		# if self.x == new_x.to_i
 			self.move_piece(new_x, new_y)
 			return true
 		end
