@@ -32,9 +32,14 @@ module KG
       p h
       assert h
       
-      white_king = FactoryGirl.create(:game_piece, x: 5, y: 5, type: 'King', status: 1, user_id: w, game_id: h)
+      white_king = FactoryGirl.create(:game_piece, x: 0, y: 4, type: 'King', status: 1, user_id: w, game_id: h)
       p white_king
       assert white_king.is_piece_alive?
+      
+      white_king.move_piece(5,5)
+      p white_king
+      assert white_king.x == 5
+      
     end
   end
 end
