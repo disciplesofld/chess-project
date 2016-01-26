@@ -29,6 +29,9 @@ class Game < ActiveRecord::Base
       return true
     end
 
+    if gamepiece.type == "Knight"
+       return false
+    end
     #assumption is that the piece won't move to the same place.
     #e.g., [2, 2] -> [2, 2]
     #that validation is done before reaching to is_obstructed? method

@@ -4,8 +4,13 @@ class GamePiece < ActiveRecord::Base
 
 
   def move_piece(new_x, new_y)
-    self.update_attributes(:x => new_x, :y => new_y)
-    #SET THIS TO RETURN BOOLEAN
+      self.update_attributes(:x => new_x, :y => new_y)
+    #SET THIS TO RECEIVE EACH PIECE TYPE BOOLEAN
+  end
+
+  def valid_move?(new_x, new_y)
+    raise "error"
+    # RECEIVES BOOLEAN FROM EACH PIECE TYPE MODEL
   end
 
   # While scanning for opponent, skip the actual piece.
