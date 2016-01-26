@@ -17,22 +17,22 @@ module KG
       assert g
 
       w = FactoryGirl.create(:user, email: 'wunderbar@underground.org')
-      #p w
+      p w
       h = FactoryGirl.create(:game, player_white: w)
-      #p h
+      p h
       assert h
     end
     
     test "create game populate pieces" do
-      w = FactoryGirl.create(:user, email: 'isairasigai@yahoo.com')
-      p w
-      b = FactoryGirl.create(:user, email: 'uma_senthil@yahoo.com')
-      p b
-      h = FactoryGirl.create(:game, player_white: w, player_black: b)
+      white = FactoryGirl.create(:user, email: 'isairasigai@yahoo.com')
+      p white
+      black = FactoryGirl.create(:user, email: 'uma_senthil@yahoo.com')
+      p black
+      h = FactoryGirl.create(:game, player_white: white)
       p h
       assert h
       
-      white_king = FactoryGirl.create(:game_piece, x: 0, y: 4, type: 'King', status: 1, user_id: w, game_id: h)
+      white_king = FactoryGirl.create(:king, x: 0, y: 4, type: 'King', status: 1, user: white, game: h)
       p white_king
       assert white_king.is_piece_alive?
       
@@ -40,6 +40,11 @@ module KG
       p white_king
       assert white_king.x == 5
       
+      black_rook = FactoryGirl.create(:rook, x: 0, y: 4, type: 'Rook', status: 1, user: black, game: h)
+      p black_rook
+      assert white_king.is_valid_rule?(4,4)
+      
     end
+    
   end
 end
