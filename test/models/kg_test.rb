@@ -22,7 +22,7 @@ module KG
       p h
       assert h
     end
-    
+
     test "create game populate pieces" do
       white = FactoryGirl.create(:user, email: 'isairasigai@yahoo.com')
       p white
@@ -31,20 +31,20 @@ module KG
       h = FactoryGirl.create(:game, player_white: white)
       p h
       assert h
-      
+
       white_king = FactoryGirl.create(:king, x: 0, y: 4, type: 'King', status: 1, user: white, game: h)
       p white_king
       assert white_king.is_piece_alive?
-      
+
       white_king.move_piece(5,5)
       p white_king
       assert white_king.x == 5
-      
+
       black_rook = FactoryGirl.create(:rook, x: 0, y: 4, type: 'Rook', status: 1, user: black, game: h)
       p black_rook
       assert white_king.is_valid_rule?(4,4)
-      
+
     end
-    
+
   end
 end
