@@ -30,7 +30,7 @@ class King < GamePiece
   end
 
   # Check the status of the piece and return true if it is alive
-  def is_piece_alive(current_piece)
+  def is_piece_alive?
     p "piece_alive"
     return self.status
 
@@ -56,7 +56,7 @@ class King < GamePiece
 
     while not (left < 0) do
       current_piece = gp.where(:x => destination_x, :y => left)
-      if ( block_not_actual_piece(x,left) && (is_piece_alive(current_piece)) && (is_block_opponent(current_piece)))
+      if ( block_not_actual_piece(x,left) && (is_piece_alive?(current_piece)) && (is_block_opponent(current_piece)))
         horizontal_left_block = current_piece
         return horizontal_left_block
       end
@@ -74,7 +74,7 @@ class King < GamePiece
 
      while not (right > 7) do
        current_piece = gp.where(:x => destination_x, :y => right)
-       if(block_not_actual_piece(x,right) && (is_piece_alive(current_piece)) && (is_block_opponent(current_piece)))
+       if(block_not_actual_piece(x,right) && (is_piece_alive?(current_piece)) && (is_block_opponent(current_piece)))
           horizontal_right_block = current_piece
           return horizontal_right_block
         end
@@ -96,7 +96,7 @@ class King < GamePiece
     while not (bottom > 7) do
       current_piece = gp.where(:x => bottom, :y => destination_y)
 
-      if (block_not_actual_piece(bottom,y) && (is_piece_alive(current_piece)) && (is_block_opponent(current_piece)))
+      if (block_not_actual_piece(bottom,y) && (is_piece_alive?(current_piece)) && (is_block_opponent(current_piece)))
         vertical_down_check = current_piece
         return vertical_down_check
       end
@@ -116,7 +116,7 @@ class King < GamePiece
 
     while not (top < 0) do
       current_piece = gp.where(:x=>top, :y=> destination_y)
-      if (block_not_actual_piece(top,y) && (is_piece_alive(current_piece)) && (is_block_opponent(current_piece)))
+      if (block_not_actual_piece(top,y) && (is_piece_alive?(current_piece)) && (is_block_opponent(current_piece)))
         vertical_down_check = current_piece
         return vertical_down_check
       end
@@ -134,7 +134,7 @@ class King < GamePiece
 
     while not ((decX < 0) && (incY > 7)) do
       current_piece = gp.where(:x => decX, :y => incY)
-      if ( block_not_actual_piece(decX,incY) && (is_piece_alive(current_piece)) && (is_block_opponent(current_piece)))
+      if ( block_not_actual_piece(decX,incY) && (is_piece_alive?(current_piece)) && (is_block_opponent(current_piece)))
         diagnol_left_up_block = current_piece
         return diagnol_left_up_block
       end
@@ -154,7 +154,7 @@ class King < GamePiece
 
     while not ((incX > 7) && (decY < 0)) do
       current_piece = gp.where(:x => incX, :y => decY)
-      if ( block_not_actual_piece(incX,decY) && (is_piece_alive(current_piece)) && (is_block_opponent(current_piece)))
+      if ( block_not_actual_piece(incX,decY) && (is_piece_alive?(current_piece)) && (is_block_opponent(current_piece)))
         diagnol_left_down_block = current_piece
         return diagnol_left_down_block
       end
@@ -174,7 +174,7 @@ class King < GamePiece
 
 	  while not ((decX < 0) && (decY < 0)) do
 	    current_piece = gp.where(:x => decX, :y => decY)
-	    if ( block_not_actual_piece(decX,decY) && (is_piece_alive(current_piece)) && (is_block_opponent(current_piece)))
+	    if ( block_not_actual_piece(decX,decY) && (is_piece_alive?(current_piece)) && (is_block_opponent(current_piece)))
 	      diagnol_right_up_block = current_piece
 	      return diagnol_right_up_block
 	    end
@@ -194,7 +194,7 @@ class King < GamePiece
 
 	  while not ((incX > 7) && (incY > 7)) do
 	    current_piece = gp.where(:x => incX, :y => incY)
-	    if ( block_not_actual_piece(incX,incY) && (is_piece_alive(current_piece)) && (is_block_opponent(current_piece)))
+	    if ( block_not_actual_piece(incX,incY) && (is_piece_alive?(current_piece)) && (is_block_opponent(current_piece)))
 	      diagnol_right_down_block = current_piece
 	      return diagnol_right_down_block
 	    end
