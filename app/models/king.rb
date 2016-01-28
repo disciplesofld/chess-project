@@ -1,8 +1,19 @@
 class King < GamePiece
+  # alternative implementation
+  def valid_move_new?(new_x, new_y)
+    dx = (new_x - x).abs
+    dy = (new_y - y).abs
+    return true if dx == 1 && dy == 1
+    return true if dx == 1 && dy == 0
+    return true if dx == 0 && dy == 1
+    false
+  end
 
+  # original
   def valid_move?(destination_x, destination_y)
-    x = self.x
-    y = self.y
+    # this doesn't do anything...you can already access these values with x and y
+    # x = self.x
+    # y = self.y
     p "is_valid_rule #{self.type}"
     valid = false
 
@@ -11,11 +22,13 @@ class King < GamePiece
     valid_indices.each do |i|
       if (destination_x.to_i == i[0]) && (destination_y.to_i == i[1])
         valid = true
-        self.move_piece(destination_x, destination_y)
+        # don't move the piece in this method, this is just for testing validity
+        # move_to(destination_x, destination_y)
         break
       end
     end
-    return valid
+    # no need to use return on last line
+    valid
   end
 
   # While scanning for opponent, skip the actual piece.
@@ -29,7 +42,11 @@ class King < GamePiece
     end
   end
 
+  # NOTE this method should be defined in the base class. all pieces share the same
+  #   status values, right? (i'm asking)
   # Check the status of the piece and return true if it is alive
+  # NOTE since this is object-oriented programming, no need to have the word 'piece'
+  #   in the name of this method. The object name provides the context.
   def is_piece_alive?
     p "piece_alive"
     return self.status
@@ -224,6 +241,7 @@ class King < GamePiece
 
 	end
 
+  # TODO this method should probably be defined in the game object
 	# This function checks for opponent in all directions and return true if there is an opponent
 	# Input destination x position and destination y position
 	def is_danger?(destination_x,destination_y)

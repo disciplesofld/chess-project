@@ -13,6 +13,29 @@ class Game < ActiveRecord::Base
     end
   end
 
+  # TODO implement
+  # return the player object of the other player
+  def get_enemy_of(player_id)
+  end
+
+  # TODO implement
+  # return true if player can attack new_x, new_x
+  def can_attack(player, new_x, new_y)
+    # get all of the pieces for this player in this game
+    # iterate over each piece
+    # check if the piece can move to new_x, new_y
+    # return true if so
+    # false otherwise
+  end
+
+  # NOTE you could pass a king in here instead too...
+  def in_check?(player_id)
+    # NOTE this is a lot like can_attack...
+    # get king position of player_id's king
+    # get enemy player...
+    # call can_attack and return the right value
+  end
+
   def is_obstructed?(gamepiece, new_x, new_y)
     # from game_controller.rb, this should probably be called :
     # if !@game.is_obstructed?(@game_piece, @new_x, @new_y)
