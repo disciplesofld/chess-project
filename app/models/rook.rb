@@ -1,5 +1,5 @@
 class Rook < GamePiece
-
+  # parameters should be converted to intgers in caller
 	def valid_move?(new_x, new_y)
 		# cannot land on similar player piece - handled by is_obstructed? method, game.rb
 		# any pieces in path from start to finish? - handled by is_obstructed? method, game.rb
