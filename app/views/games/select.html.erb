@@ -9,12 +9,12 @@
         </th>
         <% (0..7).each do |col| %>
           <td>
-            <%= link_to 'next move', move_path(@game, :game_piece_id => @game_piece.id, :new_x => col, :new_y => index),:method => :post %>
             <% if @game_piece.x == col && @game_piece.y == index %>
               <div class="selected">
                 <%= @game_piece.type %>
               </div>
             <% else %>
+              <%= link_to 'next move', move_path(@game, :game_piece_id => @game_piece.id, :new_x => col, :new_y => index),:method => :post %>
               <% @game_pieces.each do |game_piece| %>
                 <% if game_piece.x == col && game_piece.y == index %>
                   <%= game_piece.type %>
@@ -39,4 +39,3 @@
     </tfoot>
   </table>
 </div>
-
