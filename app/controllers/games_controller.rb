@@ -36,14 +36,23 @@ class GamesController < ApplicationController
     @game = Game.find(params[:id])
     @game_pieces = @game.game_pieces
     @game_piece = GamePiece.find(params[:game_piece_id])
-    if !@game.is_obstructed?(@game_piece, params[:new_x], params[:new_y]) 
-      if @game_piece.valid_move?(params[:new_x], params[:new_y])
-        @game_piece.save
-      else
-        flash[:notice] = "Invalid move for #{@game_piece.type}"
-      end
-    else # the piece is obstructed
-      flash[:notice] = "The piece is obstructed!"
+    # NOTE converting to integer here saves you from having to do it in every piece
+    new_x = params[:new_x].to_i
+    new_y = params[:new_y].to_i
+    # TODO: check if the new x & y values are in bounds
+    if !@game.is_obstructed?(@game_piece, new_x, new_y) && @game_piece.valid_move?(new_x, new_y)
+      # TODO if the piece is a king, it cannot be moved into check
+      # if <piece is a king>
+      #   enemy_player = @game.get_enemy_of(current_player.id)
+      #   if @game.can_attack_square(enemy_player, new_x, new_y)
+      #     # enemy can attack your king here, invalid move! do something about it
+      #   end
+      # end
+      @game_piece.move_to(new_x, new_y)
+      @game_piece.save
+    else
+      # can't move there!
+      flash[:notice] = "Invalid move"
     end
     redirect_to game_path
   end

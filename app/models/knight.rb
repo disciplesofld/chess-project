@@ -1,6 +1,6 @@
 class Knight < GamePiece
 
-
+  # TODO remove. no need for this here
 	# def move_piece(new_x, new_y)
   #       current_x = self.x
   #       current_y = self.y
@@ -13,6 +13,7 @@ class Knight < GamePiece
   #   end
 
     def valid_move?(next_x, next_y)
+      # these values should be converted to integers before being passed in, if it is necessary
 			n_x = next_x.to_i
 	    n_y = next_y.to_i
 
