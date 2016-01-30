@@ -1,5 +1,6 @@
 class Queen < GamePiece
 
+
   # def move_piece(new_x, new_y)
   #   self.x = self.x
   #   self.y = self.y
