@@ -16,12 +16,14 @@ class Knight < GamePiece
         end
         return valid
 
-      #return false if piece doen't move
-			# Not needed anymore; current location not available as a move (Sherilyn)
-      # return false if self.x == n_x && self.y == n_y
+
+    #return false if piece doen't move
+    # Not needed anymore; current location not available as a move (Sherilyn)
+    # return false if self.x == n_x && self.y == n_y
 
       # define the rule of knight
 
-    end
+
+  end
 
 end

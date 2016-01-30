@@ -13,12 +13,10 @@ class Queen < GamePiece
 
   def valid_move?(next_x, next_y)
     # Now only needs 2 args, and those need modified to integers - all variables adjusted to reflect
-    n_x = next_x.to_i
-    n_y = next_y.to_i
-    if is_move_horizontal?(n_x, n_y) \
-        || is_move_vertical?(n_x, n_y) \
-        || is_move_diagonal?(n_x, n_y)
-      self.move_piece(next_x, next_y)
+    if is_move_horizontal?(next_x, next_y) \
+        || is_move_vertical?(next_x, next_y) \
+        || is_move_diagonal?(next_x, next_y)
+      #self.move_piece(next_x, next_y)
       return true
     else
       return false
