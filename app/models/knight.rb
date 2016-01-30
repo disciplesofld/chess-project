@@ -29,4 +29,15 @@ class Knight < GamePiece
       end
     end
 
+    def icon
+      # icons = {"Rook" => "&#9820;", "Knight" => "", "Bishop" => "", "Queen" => "", "King" => ""}
+  		#
+      # if self.class == "Rook"
+  		# 	 "&#9820;"
+      # end
+  		image = "&#9822;"
+  		return image.html_safe
+
+    end
+
 end

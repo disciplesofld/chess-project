@@ -12,4 +12,10 @@ class Rook < GamePiece
 		end
 	end
 
+	def icon
+			image = "&#9820;"
+			return image.html_safe
+
+  end
+
 end

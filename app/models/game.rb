@@ -13,6 +13,8 @@ class Game < ActiveRecord::Base
     end
   end
 
+  
+
   # TODO implement
   # return the player object of the other player
   def get_enemy_of(player_id)

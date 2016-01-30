@@ -5,9 +5,8 @@
 table {
 	background: url('retina_wood_@2X.png');
 	border-collapse: collapse;
+	z-index: -2;
 }
-
-
 
 tr:nth-child(odd) td:nth-child(odd),
 tr:nth-child(even) td:nth-child(even) {
@@ -21,6 +20,7 @@ td {
 	height: 90px;
 	border: 1.5px solid;
 	border-color: #f4ebe9 #988b6d #988b6d #f4ebe9;
+	text-align: center;
 }
 
 th {

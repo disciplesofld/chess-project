@@ -42,3 +42,25 @@ li {
 	font-size: .8em;
 	font-style: italic;
 }
+
+.white a {
+	color: white;
+	text-shadow: 0 0 5px black;
+}
+
+.icon {
+	position: relative;
+	font-size: 4em;
+	text-decoration: none;
+	z-index: 1;
+}
+
+a.icon:link {
+	text-decoration: none;
+}
+
+.move {
+	position: absolute;
+	z-index: 2;
+	font-size: 90%;
+}
