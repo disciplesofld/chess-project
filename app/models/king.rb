@@ -1,6 +1,6 @@
 class King < GamePiece
   
-  def valid_move_new?(new_x, new_y)
+  def valid_move?(new_x, new_y)
     dx = (new_x - x).abs
     dy = (new_y - y).abs
     return true if dx == 1 && dy == 1
@@ -81,9 +81,7 @@ class King < GamePiece
    # Returns the closest blocking opponent in the horizontal left direction
   def vertical_up_check(destination_x,destination_y)
     vertical_up_check = nil
-    
     left = destination_y
-    
     while !(left < 0) && !vertical_up_check do
       left -= 1
       vertical_up_check = is_check(destination_x,left)
@@ -224,7 +222,7 @@ class King < GamePiece
     
     # This function will call the corresponding piece is_validate_rule function implemented in each piece model.
     # This function is not need for knight.
-    if !(self.valid_move_new?(x,y))
+    if !(self.valid_move?(x,y))
       return false
     end
     

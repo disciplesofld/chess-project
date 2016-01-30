@@ -52,7 +52,7 @@ module KG
       p black_rook
       
       #King move is_valid
-      actual = white_king.valid_move_new?(4,4)
+      actual = white_king.valid_move?(4,4)
       assert_equal(true, actual)
       
       # King cannot be moved if there is a rook in horizontal left from the destination cell
