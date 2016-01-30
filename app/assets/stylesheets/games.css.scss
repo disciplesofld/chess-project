@@ -3,34 +3,34 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 table {
-	background: url('retina_wood_@2X.png');
-	border-collapse: collapse;
+  background: url('retina_wood_@2X.png');
+  border-collapse: collapse;
 }
 
 
 
 tr:nth-child(odd) td:nth-child(odd),
 tr:nth-child(even) td:nth-child(even) {
-	background-color: #360e0e;
-	border-color: #ddcdca #1f0e07 #1f0e07 #ddcdca;
+  background-color: #360e0e;
+  border-color: #ddcdca #1f0e07 #1f0e07 #ddcdca;
 
 }
 
 td {
-	width: 90px;
-	height: 90px;
-	border: 1.5px solid;
-	border-color: #f4ebe9 #988b6d #988b6d #f4ebe9;
+  width: 90px;
+  height: 90px;
+  border: 1.5px solid;
+  border-color: #f4ebe9 #988b6d #988b6d #f4ebe9;
 }
 
 th {
-	background: white;
+  background: white;
 }
 
 .foot {
-	padding-top: 2px;
+  padding-top: 2px;
 }
 
 tfoot {
-	border-right: 1px white solid;
+  border-right: 1px white solid;
 }
