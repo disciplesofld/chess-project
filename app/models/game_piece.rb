@@ -23,4 +23,5 @@ class GamePiece < ActiveRecord::Base
     # always return false...force subclasses to implement :)
     false
   end
+
 end

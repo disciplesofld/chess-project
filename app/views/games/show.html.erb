@@ -1,5 +1,4 @@
 <div id="board" class="col-xs-10 col-xs-offset-1">
-  <% positions = {} %>
 
   <table>
     <% ('a'..'h').to_enum.with_index.reverse_each do |letter, index| %>
@@ -11,7 +10,13 @@
           <td>
               <% @game_pieces.each do |game_piece| %>
                 <% if game_piece.x == col && game_piece.y == index %>
-                  <%= link_to "#{game_piece.type}", select_path(:game_piece_id => game_piece, :x => game_piece.x, :y => game_piece.y) %>
+                  <% if @game.player_white_id == game_piece.user_id.to_i %>
+                    <span class="icon white">
+                  <% else %>
+                    <span class="icon black">
+                  <% end %>
+                    <%= link_to game_piece.icon, select_path(:game_piece_id => game_piece, :x => game_piece.x, :y => game_piece.y) %>
+                  </span>
                 <% end %>
               <% end %>
             <!--% row %-->

@@ -6,4 +6,10 @@ class Bishop < GamePiece
       return false
     end
   end
+
+  def icon
+    image = "&#9821;"
+    return image.html_safe
+  end
+
 end

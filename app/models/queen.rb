@@ -55,5 +55,9 @@ class Queen < GamePiece
     end
   end
 
+  def icon
+    image = "&#9819"
+    return image.html_safe
+  end
 
 end

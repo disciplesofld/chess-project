@@ -1,5 +1,5 @@
 class King < GamePiece
-  
+
   def valid_move?(new_x, new_y)
     dx = (new_x - x).abs
     dy = (new_y - y).abs
@@ -8,26 +8,26 @@ class King < GamePiece
     return true if dx == 0 && dy == 1
     false
   end
-  
+
   def is_check(x,y)
     blocking_piece = nil
     gp = self.game.game_pieces
     current_piece = gp.where(:x => x, :y => y)
     if (current_piece.first)
       if ( block_not_actual_piece(x,y) && (is_piece_alive?) && (is_block_opponent(current_piece)))
-        blocking_piece = current_piece.first 
+        blocking_piece = current_piece.first
       end
     end
     return blocking_piece
   end
-  
+
   def next_cell?(x,desx)
     if (x == desx) || (x = desx+1) || (x = desx-1)
       return true
     end
     return false
   end
-  
+
   def straight_check(desx, piece)
     type = piece.type
     x = piece.x
@@ -40,7 +40,7 @@ class King < GamePiece
       return false
     end
   end
-  
+
   def diagnol_check(desx, piece)
     type = piece.type
     x = piece.x
@@ -53,8 +53,8 @@ class King < GamePiece
       return false
     end
   end
- 
- # While scanning for opponent, skip the actual piece. 
+
+ # While scanning for opponent, skip the actual piece.
   def block_not_actual_piece(block_x,block_y)
     if (( block_x == self.x) && (block_y == self.y))
       return false
@@ -62,12 +62,12 @@ class King < GamePiece
       return true
     end
   end
-  
+
   # Check the status of the piece and return true if it is alive
   def is_piece_alive?
     return self.status
   end
-  
+
   # Return true if the blocking piece is an opponent
   def is_block_opponent(current_piece)
     current_user_id = current_piece.pluck(:user_id)[0]
@@ -77,7 +77,7 @@ class King < GamePiece
       return true
     end
   end
-  
+
    # Returns the closest blocking opponent in the horizontal left direction
   def vertical_up_check(destination_x,destination_y)
     vertical_up_check = nil
@@ -91,7 +91,7 @@ class King < GamePiece
     end
     return vertical_up_check
   end
-  
+
     # Returns the closest blocking opponent in the horizontal right direction
   def vertical_down_check(destination_x,destination_y)
     vertical_down_check = nil
@@ -118,7 +118,7 @@ class King < GamePiece
     end
     return horizontal_right_check
   end
-  
+
   # Returns the closest blocking opponent in the vertical up direction
   def horizontal_left_check(destination_x,destination_y)
     horizontal_left_check = nil
@@ -132,7 +132,7 @@ class King < GamePiece
     end
     return horizontal_left_check
   end
-  
+
    # Returns the closest blocking opponent in the diagnol left up direction
   def diagnol_left_up_check(destination_x,destination_y)
     incY = destination_y
@@ -148,7 +148,7 @@ class King < GamePiece
     end
     return diagnol_left_up_check
   end
-  
+
    # Returns the closest blocking opponent in the diagnol left down direction
   def diagnol_left_down_check(destination_x,destination_y)
     decY = destination_y
@@ -164,8 +164,8 @@ class King < GamePiece
     end
     return diagnol_left_down_check
   end
-  
-  # Returns the closest blocking opponent in the diagnol right up direction  
+
+  # Returns the closest blocking opponent in the diagnol right up direction
 	def diagnol_right_up_check(destination_x,destination_y)
 	  diagnol_right_up_check = nil
     decY = destination_y
@@ -180,7 +180,7 @@ class King < GamePiece
 	  end
 	  return diagnol_right_up_check
 	end
-	
+
 	# Returns the closest blocking opponent in the diagnol right down direction
 	def diagnol_right_down_check(destination_x,destination_y)
 	  diagnol_right_down_check = nil
@@ -196,7 +196,7 @@ class King < GamePiece
 	  end
 	  return diagnol_right_down_check
 	end
-	
+
 		# Returns the closest blocking knight
 	def knight_check(destination_x,destination_y)
 	  gp = self.game.game_pieces
@@ -204,7 +204,7 @@ class King < GamePiece
     x = destination_x
     y = destination_y
     kinght_indices = [ [x-2,y+1], [x-2,y-1],[x-1,y-2], [x+1,y-2], [x+2,y-1], [x+2,y+1], [x+1,y+2], [x-1,y+2]]
-    
+
     kinght_indices.each do |i|
       current_piece = gp.where(:x =>i[0], :y => i[1])
       if (current_piece.first && current_piece.pluck(:type)[0] == "Knight")
@@ -213,19 +213,19 @@ class King < GamePiece
     end
     return knight_block
   end
-	
+
 		# This function checks for opponent in all directions and return true if there is an opponent
 	# Input destination x position and destination y position
 	def is_danger?(destination_x,destination_y)
     x = destination_x.to_i
     y = destination_y.to_i
-    
+
     # This function will call the corresponding piece is_validate_rule function implemented in each piece model.
     # This function is not need for knight.
     if !(self.valid_move?(x,y))
       return false
     end
-    
+
     check = false
     if (horizontal_left_check(x, y)||horizontal_right_check(x, y)|| \
       vertical_down_check(x, y) || vertical_up_check(x, y) || diagnol_left_up_check(x,y) \
@@ -235,4 +235,10 @@ class King < GamePiece
       return false
     end
   end
+
+  def icon
+    image = "&#9818;"
+    return image.html_safe
+  end
+
 end
