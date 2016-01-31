@@ -57,6 +57,20 @@ class GamesController < ApplicationController
     redirect_to game_path
   end
 
+  def destroy
+    @game = Game.find(params[:id])
+    if @game.player_white == current_user
+      flash[:notice] = "Player Black Won!"
+    else
+      flash[:notice] = "Player White Won!"
+    end
+    # to-do
+    # need to add code here for a winning player
+    # (points add?  number of winning game added for a winner?)
+    @game.destroy
+    redirect_to root_path
+  end
+
   private
 
   def game_params
