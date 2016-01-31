@@ -10,8 +10,8 @@ table {
 
 tr:nth-child(odd) td:nth-child(odd),
 tr:nth-child(even) td:nth-child(even) {
-	background-color: #360e0e;
-	border-color: #ddcdca #1f0e07 #1f0e07 #ddcdca;
+  background-color: #360e0e;
+  border-color: #ddcdca #1f0e07 #1f0e07 #ddcdca;
 
 }
 
@@ -24,13 +24,13 @@ td {
 }
 
 th {
-	background: white;
+  background: white;
 }
 
 .foot {
-	padding-top: 2px;
+  padding-top: 2px;
 }
 
 tfoot {
-	border-right: 1px white solid;
+  border-right: 1px white solid;
 }
