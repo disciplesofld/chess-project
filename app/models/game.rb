@@ -1,5 +1,5 @@
 class Game < ActiveRecord::Base
-  has_many :game_pieces
+  has_many :game_pieces, dependent: :destroy
   belongs_to :player_white, :class_name => "User", :foreign_key => "player_white_id"
   belongs_to :player_black, :class_name => "User", :foreign_key => "player_black_id"
 
@@ -53,7 +53,7 @@ class Game < ActiveRecord::Base
     end
 
     if gamepiece.type == "Knight"
-       return false
+      return false
     end
     #assumption is that the piece won't move to the same place.
     #e.g., [2, 2] -> [2, 2]

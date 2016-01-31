@@ -35,4 +35,7 @@
       </tr>
     </tfoot>
   </table>
+  <br />
+  <%= link_to 'Resign', game_path(@game), :method => :delete, :data => {:confirm => 'Are you sure you want to resign this game?'}, :class => 'btn btn-primary' %>
 </div>
+
