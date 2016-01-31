@@ -10,25 +10,22 @@
         <% (0..7).each do |col| %>
           <td>
             <% if @game_piece.x == col && @game_piece.y == index %>
-            <% if @game_piece.type == "Rook" || @game_piece.type == "Knight" %>
-
               <span class="selected icon">
                 <%= @game_piece.icon %>
-                <% else %>
-                <%= @game_piece.type %>
               </span>
-              <% end %>
             <% else %>
-              <span class="move">
-              <%= link_to 'next move', move_path(@game, :game_piece_id => @game_piece.id, :new_x => col, :new_y => index),:method => :post %>
-            </span>
+              <span class="center-text">
+                <%= link_to 'next move', move_path(@game, :game_piece_id => @game_piece.id, :new_x => col, :new_y => index),:method => :post, :class => "move" %>
+              </span>
               <% @game_pieces.each do |game_piece| %>
                 <% if game_piece.x == col && game_piece.y == index %>
-                <% if game_piece.type == "Rook" || game_piece.type == "Knight" %>
-                  <span class="icon"><%= game_piece.icon %></span>
-                <% else %>
-                  <%= game_piece.user_id %>
-                <% end %>
+                  <% if @game.player_white_id == game_piece.user_id.to_i %>
+                    <span class="icon white">
+                  <% else %>
+                    <span class="icon black">
+                  <% end %>
+                  <%= game_piece.icon %>
+                  </span>
                 <% end %>
               <% end %>
 

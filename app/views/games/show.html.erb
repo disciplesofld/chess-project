@@ -10,15 +10,13 @@
           <td>
               <% @game_pieces.each do |game_piece| %>
                 <% if game_piece.x == col && game_piece.y == index %>
-                  <% if game_piece.type == "Rook" || game_piece.type == "Knight" %>
                   <% if @game.player_white_id == game_piece.user_id.to_i %>
                     <span class="icon white">
-                    <%= link_to game_piece.icon, select_path(:game_piece_id => game_piece, :x => game_piece.x, :y => game_piece.y) %>
-                    <% else %>
-                    <%= link_to "#{game_piece.type}", select_path(:game_piece_id => game_piece, :x => game_piece.x, :y => game_piece.y) %>
-                    <% end %>
-                  </span>
+                  <% else %>
+                    <span class="icon black">
                   <% end %>
+                    <%= link_to game_piece.icon, select_path(:game_piece_id => game_piece, :x => game_piece.x, :y => game_piece.y) %>
+                  </span>
                 <% end %>
               <% end %>
             <!--% row %-->

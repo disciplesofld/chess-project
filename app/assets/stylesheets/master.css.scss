@@ -1,3 +1,12 @@
+@mixin white {
+	color: white;
+	text-shadow: 0 0 4px black;
+}
+@mixin black {
+	color: black;
+	text-shadow: 0 0 2px white;
+}
+
 .navbar-brand{
 	color: #707070;
 	font-family: 'Montserrat', sans-serif;
@@ -43,19 +52,24 @@ li {
 	font-style: italic;
 }
 
-.white a {
-	color: white;
-	text-shadow: 0 0 5px black;
+.white a,
+.white {
+	@include white;
+}
+
+.black a,
+.black {
+	@include black;
 }
 
 .icon {
 	position: relative;
-	font-size: 4.25em;
+	font-size: 4.5em;
 	text-decoration: none;
 	z-index: 1;
 }
 
-a.icon:link {
+.icon a:link {
 	text-decoration: none;
 }
 
@@ -63,4 +77,8 @@ a.icon:link {
 	position: absolute;
 	z-index: 2;
 	font-size: 90%;
+}
+
+.center-text {
+	text-align: center;
 }
