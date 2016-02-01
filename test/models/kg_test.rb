@@ -115,7 +115,7 @@ module KG
       assert_equal(true, actual)
     end
     
-     test "Opponent Knight check to king" do
+    test "Opponent Knight check to king" do
       white = FactoryGirl.create(:user, email: 'isairasigai@yahoo.com')
       black = FactoryGirl.create(:user, email: 'uma_senthil@yahoo.com')
       h = FactoryGirl.create(:game, player_white: white)
