@@ -1,21 +1,86 @@
-<div id="board" class="col-xs-10 col-xs-offset-1">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<style>
+  .draggable.ui-draggable-dragging {color: gray;}
+</style>
+<script>
 
-  <table>
+$( init );
+
+var piece_id, x_coord_new, y_coord_new;
+
+function init() {
+
+  $('.draggable').draggable( {
+    stop: handleDragEvent
+  });
+  $('.droppable td').droppable( {
+    drop: handleDropEvent
+  });
+}
+
+function handleDragEvent( event, ui ) {
+  var draggable = ui.draggable;
+  piece_id = $(this).attr("id");
+  var game_id= '<%=@game.id%>';
+  //console.log("game_id is " + game_id);
+  //console.log("piece_id is " + piece_id);
+  //console.log("event taget is is" + event.target.id)
+  //console.log("x_coord_new is " + x_coord_new + " and y_coord_new is " + y_coord_new);
+  var path = "/games/" + game_id + "/" + piece_id + "/" + x_coord_new + "/" + y_coord_new;
+
+  $('#move').attr({
+    'action': path
+  });
+  $('#move').submit();  
+  // get the destination coordinate
+  //alert( 'Dragged!' +  "(ID = " + piece_id + ")");
+}
+
+function handleDropEvent( event, ui ) {
+  var draggable = ui.draggable;
+  var droppableID = $(this).attr("id");
+  //console.log("droppable id is " + droppableID);
+  // get the destination coordinate
+  x_coord_new = droppableID.charAt(droppableID.length-2);
+  y_coord_new = droppableID.charAt(droppableID.length-1);
+  //alert( 'Dropped!' +  "(" + x_coord_new + ", " + y_coord_new + ")");
+}
+
+</script>
+<div id="board" class="col-xs-10 col-xs-offset-1">
+  <% if @resign_message != nil %>
+    <h1><%= @resign_message %></h1>
+    <h3><%= link_to 'Go back to Game Dashboard', games_path %></h3>
+  <% end %>
+  <div class="results">
+    <!-- Obtain action path from javascript.-->
+    <%= form_tag '', :id => "move"%>
+  </div>
+  <table class="droppable">
     <% ('a'..'h').to_enum.with_index.reverse_each do |letter, index| %>
       <tr>
         <th>
           <%= letter %>
         </th>
         <% (0..7).each do |col| %>
-          <td>
+          <% square_id = "square" + col.to_s + index.to_s %>
+          <td id= "<%= square_id %>">   
               <% @game_pieces.each do |game_piece| %>
                 <% if game_piece.x == col && game_piece.y == index %>
-                  <% if @game.player_white_id == game_piece.user_id.to_i %>
-                    <span class="icon white">
-                  <% else %>
-                    <span class="icon black">
-                  <% end %>
-                    <%= link_to game_piece.icon, select_path(:game_piece_id => game_piece, :x => game_piece.x, :y => game_piece.y) %>
+                  <% if @resign_message == nil %>
+                    <% if @game.player_white_id == game_piece.user_id.to_i %>
+                      <span class="icon white">
+                    <% else %>
+                      <span class="icon black">
+                    <% end %>
+                  
+                    <div class="draggable" id= "<%= game_piece.id %>">
+                      <%= game_piece.icon %>
+                    </div>
+                    <% end %>
+                    <!--%= link_to game_piece.icon, select_path(:game_piece_id => game_piece, :x => game_piece.x, :y => game_piece.y) %-->
                   </span>
                 <% end %>
               <% end %>
@@ -35,4 +100,8 @@
       </tr>
     </tfoot>
   </table>
+  <br />
+  <% if @resign_message == nil %>
+    <%= link_to 'Resign', game_path(@game), :method => :delete, :data => {:confirm => 'Are you sure you want to resign this game?'}, :class => 'btn btn-primary' %>
+  <% end %>
 </div>
