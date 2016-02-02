@@ -11,9 +11,9 @@ class GamesController < ApplicationController
     @game_pieces = @game.game_pieces
     @resign_message = nil
     if @game.player_white_id == -1
-      @resign_message = "Player Black Won! (Player White Resigned)"
-    elsif @game.player_black_id == -1
-      @resign_message = "Player White Won! (Player Black Resigned)"
+      @resign_message = "Player Black Won! (Player White Has Left the Match)"
+    elsif  @game.player_black_id == -1
+      @resign_message = "Player White Won! (Player Black Has Left the Match)"
     end
   end
 
@@ -65,12 +65,14 @@ class GamesController < ApplicationController
 
   def destroy
     @game = Game.find(params[:id])
+    @game_pieces = @game.game_pieces
     if @game.player_white == current_user
-      flash[:notice] = "Player Black Won!"
-      @game.player_black_id = -1
-    else
-      flash[:notice] = "Player White Won!"
       @game.player_white_id = -1
+
+      flash[:notice] = "Player Black Won!"
+    else
+      @game.player_black_id = -1
+      flash[:notice] = "Player White Won!"
     end
     @game.save
     # to-do

@@ -6,17 +6,17 @@ class Game < ActiveRecord::Base
   def populate_pieces!
     game_piece_rank = ["Rook", "Knight", "Bishop", "Queen", "King", "Bishop", "Knight", "Rook"]
     (0..7).each do |i|
-      game_pieces << (game_piece_rank[i].constantize).new(x: i, y: 0, status: 1, game_id: self.id, user_id: player_white_id)  #player 1
-      game_pieces << Pawn.new(x: i, y: 1, status: 1, game_id: self.id, user_id: player_white_id)  #player 1
-      game_pieces << (game_piece_rank[i].constantize).new(x: i, y: 7, status: 1, game_id: self.id, user_id: player_black_id)  #player 2
-      game_pieces << Pawn.new(x: i, y: 6, status: 1, game_id: self.id, user_id: player_black_id)  #player 2
+      game_pieces << (game_piece_rank[i].constantize).new(x: i, y: 0, game_id: self.id, user_id: player_white_id)  #player 1
+      game_pieces << Pawn.new(x: i, y: 1, game_id: self.id, user_id: player_white_id)  #player 1
+      game_pieces << (game_piece_rank[i].constantize).new(x: i, y: 7, game_id: self.id, user_id: player_black_id)  #player 2
+      game_pieces << Pawn.new(x: i, y: 6, game_id: self.id, user_id: player_black_id)  #player 2
     end
   end
 
-    # return the player object of the other player
+  # return the player object of the other player
   def get_enemy_of(player_id)
     if !(player_white_id == player_id.id)
-      return player_white_id 
+      return player_white_id
     else
       return player_black_id
     end

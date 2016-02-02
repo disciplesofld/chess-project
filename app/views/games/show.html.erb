@@ -30,7 +30,9 @@ function handleDragEvent( event, ui ) {
   //console.log("x_coord_new is " + x_coord_new + " and y_coord_new is " + y_coord_new);
   var path = "/games/" + game_id + "/" + piece_id + "/" + x_coord_new + "/" + y_coord_new;
 
-  $('#move').attr('action', path);
+  $('#move').attr({
+    'action': path
+  });
   $('#move').submit();  
   // get the destination coordinate
   //alert( 'Dragged!' +  "(ID = " + piece_id + ")");
@@ -53,8 +55,8 @@ function handleDropEvent( event, ui ) {
     <h3><%= link_to 'Go back to Game Dashboard', games_path %></h3>
   <% end %>
   <div class="results">
-    <!-- # is the path of the action.  Obtain from javascript.  This goes to move action. -->
-    <form_tag "#", :id => 'move'%>
+    <!-- Obtain action path from javascript.-->
+    <%= form_tag '', :id => "move"%>
   </div>
   <table class="droppable">
     <% ('a'..'h').to_enum.with_index.reverse_each do |letter, index| %>
@@ -67,17 +69,17 @@ function handleDropEvent( event, ui ) {
           <td id= "<%= square_id %>">   
               <% @game_pieces.each do |game_piece| %>
                 <% if game_piece.x == col && game_piece.y == index %>
-
-                  <% if @game.player_white_id == game_piece.user_id.to_i %>
-                    <span class="icon white">
-                  <% else %>
-                    <span class="icon black">
-                  <% end %>
+                  <% if @resign_message == nil %>
+                    <% if @game.player_white_id == game_piece.user_id.to_i %>
+                      <span class="icon white">
+                    <% else %>
+                      <span class="icon black">
+                    <% end %>
                   
                     <div class="draggable" id= "<%= game_piece.id %>">
                       <%= game_piece.icon %>
                     </div>
-
+                    <% end %>
                     <!--%= link_to game_piece.icon, select_path(:game_piece_id => game_piece, :x => game_piece.x, :y => game_piece.y) %-->
                   </span>
                 <% end %>
@@ -99,5 +101,7 @@ function handleDropEvent( event, ui ) {
     </tfoot>
   </table>
   <br />
-  <%= link_to 'Resign', game_path(@game), :method => :delete, :data => {:confirm => 'Are you sure you want to resign this game?'}, :class => 'btn btn-primary' %>
+  <% if @resign_message == nil %>
+    <%= link_to 'Resign', game_path(@game), :method => :delete, :data => {:confirm => 'Are you sure you want to resign this game?'}, :class => 'btn btn-primary' %>
+  <% end %>
 </div>
