@@ -20,8 +20,9 @@ class GameTest < ActiveSupport::TestCase
   
   test "get enemy" do
     current_game = FactoryGirl.create(:game)
+    p current_game
     p current_game.player_white
-    actual = current_game.get_enemy_of(current_game.player_white)
+    actual = current_game.get_enemy_of(current_game.player_white_id)
     p actual
     expected = current_game.player_black_id
     p expected
@@ -33,8 +34,8 @@ class GameTest < ActiveSupport::TestCase
     black = FactoryGirl.create(:user, email: 'uma_senthil@yahoo.com')
     current_game = FactoryGirl.create(:game, player_white: white)
     
-    white_king = FactoryGirl.create(:king, x: 4, y: 4, type: 'King', status: 1, user: white, game: current_game)
-    black_queen = FactoryGirl.create(:queen, x: 6, y: 5, type: 'Queen', status: 1, user: black, game: current_game)
+    white_king = FactoryGirl.create(:king, x: 4, y: 4, type: 'King', user: white, game: current_game)
+    black_queen = FactoryGirl.create(:queen, x: 6, y: 5, type: 'Queen', user: black, game: current_game)
     actual = current_game.can_attack?(black, 4, 4)
     assert_equal(false, actual)
   end
@@ -42,8 +43,8 @@ class GameTest < ActiveSupport::TestCase
   test "in check" do
     white = FactoryGirl.create(:user, email: 'isairasigai@yahoo.com')
     current_game = FactoryGirl.create(:game, player_white: white)
-    white_king = FactoryGirl.create(:king, x: 4, y: 4, type: 'King', status: 1, user: white, game: current_game)
-    black_queen = FactoryGirl.create(:queen, x: 5, y: 5, type: 'Queen', status: 1, user: current_game.player_black, game: current_game)
+    white_king = FactoryGirl.create(:king, x: 4, y: 4, type: 'King', user: white, game: current_game)
+    black_queen = FactoryGirl.create(:queen, x: 5, y: 5, type: 'Queen', user: current_game.player_black, game: current_game)
     
     actual = current_game.in_check?(white)
     assert_equal(true, actual)
