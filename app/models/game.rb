@@ -15,9 +15,13 @@ class Game < ActiveRecord::Base
 
     # return the player object of the other player
   def get_enemy_of(player_id)
-    if !(player_white_id == player_id.id)
+    if !(player_white_id == player_id)
+      p 'enemy white player'
+      p player_white_id
       return player_white_id 
     else
+      p 'enemy black player'
+      p player_black_id
       return player_black_id
     end
   end
@@ -25,12 +29,17 @@ class Game < ActiveRecord::Base
   # return true if player can attack new_x, new_x
   def can_attack?(player, new_x, new_y)
     # get all of the pieces alive for this player in this game
+   p 'can attack'
     opponents = self.game_pieces.where(:user_id => player, :status =>1)
 
     # iterate over each piece
     opponents.each do |opponent_piece|
+      p 'opponent_piece'
+      p opponent_piece
       # check if the piece can move to new_x, new_y
       if opponent_piece.valid_move?(new_x, new_y)
+         p 'opponent_piece can attack'
+         p opponent_piece
         return true
       end
     end
