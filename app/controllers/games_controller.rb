@@ -9,6 +9,12 @@ class GamesController < ApplicationController
   def show
     @game = Game.find(params[:id])
     @game_pieces = @game.game_pieces
+    @resign_message = nil
+    if @game.player_white_id == -1
+      @resign_message = "Player Black Won! (Player White Resigned)"
+    elsif @game.player_black_id == -1
+      @resign_message = "Player White Won! (Player Black Resigned)"
+    end
   end
 
   def create
@@ -61,13 +67,15 @@ class GamesController < ApplicationController
     @game = Game.find(params[:id])
     if @game.player_white == current_user
       flash[:notice] = "Player Black Won!"
+      @game.player_black_id = -1
     else
       flash[:notice] = "Player White Won!"
+      @game.player_white_id = -1
     end
+    @game.save
     # to-do
     # need to add code here for a winning player
     # (points add?  number of winning game added for a winner?)
-    @game.destroy
     redirect_to root_path
   end
 
