@@ -17,6 +17,37 @@ class GameTest < ActiveSupport::TestCase
     end
     assert_not_nil joinable_game
   end
+  
+  test "get enemy" do
+    current_game = FactoryGirl.create(:game)
+    p current_game.player_white
+    actual = current_game.get_enemy_of(current_game.player_white)
+    p actual
+    expected = current_game.player_black_id
+    p expected
+    assert_equal(actual,expected)
+  end
+  
+  test "can attack" do
+    white = FactoryGirl.create(:user, email: 'isairasigai@yahoo.com')
+    black = FactoryGirl.create(:user, email: 'uma_senthil@yahoo.com')
+    current_game = FactoryGirl.create(:game, player_white: white)
+    
+    white_king = FactoryGirl.create(:king, x: 4, y: 4, type: 'King', status: 1, user: white, game: current_game)
+    black_queen = FactoryGirl.create(:queen, x: 6, y: 5, type: 'Queen', status: 1, user: black, game: current_game)
+    actual = current_game.can_attack?(black, 4, 4)
+    assert_equal(false, actual)
+  end
+
+  test "in check" do
+    white = FactoryGirl.create(:user, email: 'isairasigai@yahoo.com')
+    current_game = FactoryGirl.create(:game, player_white: white)
+    white_king = FactoryGirl.create(:king, x: 4, y: 4, type: 'King', status: 1, user: white, game: current_game)
+    black_queen = FactoryGirl.create(:queen, x: 5, y: 5, type: 'Queen', status: 1, user: current_game.player_black, game: current_game)
+    
+    actual = current_game.in_check?(white)
+    assert_equal(true, actual)
+  end
 
   def create_game_pieces(x_1, y_1, x_2, y_2, new_x, new_y)
     # (x_1, y_1) <- current position
@@ -110,9 +141,9 @@ class GameTest < ActiveSupport::TestCase
   test "gamepiece is not obstructed when moving to diagonal to down left" do
     assert_equal false, create_game_pieces(3,4,0,0,0,1)
   end
-  # test "second user can join game" do
-  #   started_game = Game.create(id: 1, player_black_id: 1, name_for_game: "royalty bout")
-  #
-  # end
+  test "second user can join game" do
+    started_game = Game.create(id: 1, player_black_id: 1, name_for_game: "royalty bout")
+  
+  end
 
 end

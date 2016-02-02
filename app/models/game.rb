@@ -13,27 +13,40 @@ class Game < ActiveRecord::Base
     end
   end
 
-  # TODO implement
-  # return the player object of the other player
+    # return the player object of the other player
   def get_enemy_of(player_id)
+    if !(player_white_id == player_id.id)
+      return player_white_id 
+    else
+      return player_black_id
+    end
   end
 
-  # TODO implement
   # return true if player can attack new_x, new_x
-  def can_attack(player, new_x, new_y)
-    # get all of the pieces for this player in this game
+  def can_attack?(player, new_x, new_y)
+    # get all of the pieces alive for this player in this game
+    opponents = self.game_pieces.where(:user_id => player, :status =>1)
+
     # iterate over each piece
-    # check if the piece can move to new_x, new_y
-    # return true if so
-    # false otherwise
+    opponents.each do |opponent_piece|
+      # check if the piece can move to new_x, new_y
+      if opponent_piece.valid_move?(new_x, new_y)
+        return true
+      end
+    end
+    return false
   end
 
   # NOTE you could pass a king in here instead too...
   def in_check?(player_id)
-    # NOTE this is a lot like can_attack...
     # get king position of player_id's king
+    king = (self.game_pieces.where("type = ? AND user_id=?", 'King', player_id)).first
+
     # get enemy player...
+    enemy = get_enemy_of(player_id)
+
     # call can_attack and return the right value
+    return can_attack?(enemy, king.x, king.y)
   end
 
   def is_obstructed?(gamepiece, new_x, new_y)
