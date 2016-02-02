@@ -5,7 +5,7 @@ class Pawn < GamePiece
     # Based on move, 1 or 2 blocks only forward
     # self.x = Column index; self.y = Row index (reversed: bottom-to-top)
 
-    if self.x == new_x
+    if self.x == new_x # NOTE: This parameter will change for capturing
 
       if self.user_id == game.player_white_id # White pawn
         if (moved == true && new_y == (self.y + 1)) || \
