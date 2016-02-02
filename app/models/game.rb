@@ -6,18 +6,22 @@ class Game < ActiveRecord::Base
   def populate_pieces!
     game_piece_rank = ["Rook", "Knight", "Bishop", "Queen", "King", "Bishop", "Knight", "Rook"]
     (0..7).each do |i|
-      game_pieces << (game_piece_rank[i].constantize).new(x: i, y: 0, status: 1, game_id: self.id, user_id: player_white_id)  #player 1
+      game_pieces << (game_piece_rank[i].constantize).new(x: i, y: 0, game_id: self.id, user_id: player_white_id)  #player 1
       game_pieces << Pawn.new(x: i, y: 1, status: 1, game_id: self.id, user_id: player_white_id)  #player 1
-      game_pieces << (game_piece_rank[i].constantize).new(x: i, y: 7, status: 1, game_id: self.id, user_id: player_black_id)  #player 2
+      game_pieces << (game_piece_rank[i].constantize).new(x: i, y: 7, game_id: self.id, user_id: player_black_id)  #player 2
       game_pieces << Pawn.new(x: i, y: 6, status: 1, game_id: self.id, user_id: player_black_id)  #player 2
     end
   end
 
     # return the player object of the other player
   def get_enemy_of(player_id)
-    if !(player_white_id == player_id.id)
+    if !(player_white_id == player_id)
+      p 'enemy white player'
+      p player_white_id
       return player_white_id 
     else
+      p 'enemy black player'
+      p player_black_id
       return player_black_id
     end
   end
@@ -25,12 +29,17 @@ class Game < ActiveRecord::Base
   # return true if player can attack new_x, new_x
   def can_attack?(player, new_x, new_y)
     # get all of the pieces alive for this player in this game
-    opponents = self.game_pieces.where(:user_id => player, :status =>1)
+   p 'can attack'
+    opponents = self.game_pieces.where(:user_id => player, :alive => true)
 
     # iterate over each piece
     opponents.each do |opponent_piece|
+      p 'opponent_piece'
+      p opponent_piece
       # check if the piece can move to new_x, new_y
       if opponent_piece.valid_move?(new_x, new_y)
+         p 'opponent_piece can attack'
+         p opponent_piece
         return true
       end
     end
@@ -43,7 +52,7 @@ class Game < ActiveRecord::Base
     king = (self.game_pieces.where("type = ? AND user_id=?", 'King', player_id)).first
 
     # get enemy player...
-    enemy = get_enemy_of(player_id)
+    enemy = get_enemy_of(player_id.id)
 
     # call can_attack and return the right value
     return can_attack?(enemy, king.x, king.y)
