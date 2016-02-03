@@ -52,7 +52,6 @@ class GamesController < ApplicationController
         p @game_piece.user_id
         opponent = @game.get_enemy_of(@game_piece.user_id)
         if !@game.can_attack?(opponent, new_x, new_y)
-          p "call can attack from controller"
          move_save(new_x, new_y)
         else
           flash[:notice] = "King cannot be moved in check position!"
