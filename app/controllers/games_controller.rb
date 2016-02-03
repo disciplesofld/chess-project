@@ -48,14 +48,18 @@ class GamesController < ApplicationController
     # TODO: check if the new x & y values are in bounds
     if !@game.is_obstructed?(@game_piece, new_x, new_y) && @game_piece.valid_move?(new_x, new_y)
       # TODO if the piece is a king, it cannot be moved into check
-      # if <piece is a king>
-      #   enemy_player = @game.get_enemy_of(current_player.id)
-      #   if @game.can_attack_square(enemy_player, new_x, new_y)
-      #     # enemy can attack your king here, invalid move! do something about it
-      #   end
-      # end
-      @game_piece.move_to(new_x, new_y)
-      @game_piece.save
+      if @game_piece.type == 'King'
+        p @game_piece.user_id
+        opponent = @game.get_enemy_of(@game_piece.user_id)
+        if !@game.can_attack?(opponent, new_x, new_y)
+          p "call can attack from controller"
+         move_save(new_x, new_y)
+        else
+          flash[:notice] = "King cannot be moved in check position!"
+        end
+      else
+       move_save(new_x, new_y)
+      end
     else
       # can't move there!
       flash[:notice] = "Invalid move"
@@ -85,6 +89,11 @@ class GamesController < ApplicationController
 
   def game_params
     params.require(:game).permit(:player_white_id, :player_black_id, :name_for_game)
+  end
+  
+  def move_save(new_x, new_y)
+    @game_piece.move_to(new_x, new_y)
+    @game_piece.save
   end
 
 end
