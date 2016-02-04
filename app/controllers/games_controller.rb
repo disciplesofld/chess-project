@@ -9,6 +9,12 @@ class GamesController < ApplicationController
   def show
     @game = Game.find(params[:id])
     @game_pieces = @game.game_pieces
+    @resign_message = nil
+    if @game.player_white_id == -1
+      @resign_message = "Player Black Won! (Player White Has Left the Match)"
+    elsif  @game.player_black_id == -1
+      @resign_message = "Player White Won! (Player Black Has Left the Match)"
+    end
   end
 
   def create
@@ -42,14 +48,17 @@ class GamesController < ApplicationController
     # TODO: check if the new x & y values are in bounds
     if !@game.is_obstructed?(@game_piece, new_x, new_y) && @game_piece.valid_move?(new_x, new_y)
       # TODO if the piece is a king, it cannot be moved into check
-      # if <piece is a king>
-      #   enemy_player = @game.get_enemy_of(current_player.id)
-      #   if @game.can_attack_square(enemy_player, new_x, new_y)
-      #     # enemy can attack your king here, invalid move! do something about it
-      #   end
-      # end
-      @game_piece.move_to(new_x, new_y)
-      @game_piece.save
+      if @game_piece.type == 'King'
+        p @game_piece.user_id
+        opponent = @game.get_enemy_of(@game_piece.user_id)
+        if !@game.can_attack?(opponent, new_x, new_y)
+         move_save(new_x, new_y)
+        else
+          flash[:notice] = "King cannot be moved in check position!"
+        end
+      else
+       move_save(new_x, new_y)
+      end
     else
       # can't move there!
       flash[:notice] = "Invalid move"
@@ -57,10 +66,33 @@ class GamesController < ApplicationController
     redirect_to game_path
   end
 
+  def destroy
+    @game = Game.find(params[:id])
+    @game_pieces = @game.game_pieces
+    if @game.player_white == current_user
+      @game.player_white_id = -1
+
+      flash[:notice] = "Player Black Won!"
+    else
+      @game.player_black_id = -1
+      flash[:notice] = "Player White Won!"
+    end
+    @game.save
+    # to-do
+    # need to add code here for a winning player
+    # (points add?  number of winning game added for a winner?)
+    redirect_to root_path
+  end
+
   private
 
   def game_params
     params.require(:game).permit(:player_white_id, :player_black_id, :name_for_game)
+  end
+  
+  def move_save(new_x, new_y)
+    @game_piece.move_to(new_x, new_y)
+    @game_piece.save
   end
 
 end
