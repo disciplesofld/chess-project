@@ -89,7 +89,7 @@ class GamesController < ApplicationController
   def game_params
     params.require(:game).permit(:player_white_id, :player_black_id, :name_for_game)
   end
-  
+
   def move_save(new_x, new_y)
     @game_piece.move_to(new_x, new_y)
     @game_piece.save

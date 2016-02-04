@@ -8,13 +8,13 @@ class Pawn < GamePiece
     if self.x == new_x # NOTE: This parameter will change for capturing
 
       if self.user_id == game.player_white_id # White pawn
-        if (moved == true && new_y == (self.y + 1)) || \
-          (moved == false && new_y <= (self.y + 2))
+        if (self.moved == true && new_y == (self.y + 1)) || \
+          (self.moved == false && new_y <= (self.y + 2))
           return true
         end
       else # Black pawn
-        if (moved == true && new_y == (self.y - 1)) || \
-          (moved == false && new_y <= (self.y - 2))
+        if (self.moved == true && (self.y - 1) == new_y) || \
+          (self.moved == false && (self.y - 2) <= new_y)
           return true
         end
       end

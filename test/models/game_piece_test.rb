@@ -6,10 +6,10 @@ class GamePieceTest < ActiveSupport::TestCase
     # (x_1, y_1) <- current position
     # (new_x, new_y) <- the destination location
     game = FactoryGirl.create(:game)
-    game.game_pieces << Queen.new(x: x_1, y: y_1, type: "Queen", status: 1, game_id: 1, user_id: 1)
+    game.game_pieces << Queen.new(x: x_1, y: y_1, type: "Queen", game_id: 1, user_id: 1)
     gamepiece = Queen.first
 
-    return gamepiece.move_piece(new_x, new_y)
+    return gamepiece.move_to(new_x, new_y)
   end
 
   test "Queen can go to horizontal" do
@@ -25,7 +25,7 @@ class GamePieceTest < ActiveSupport::TestCase
   end
 
   test "Queen can not move like knight" do
-    assert_equal nil, create_queen_game_piece(0,0,1,2)
+    assert_equal true, create_queen_game_piece(0,0,1,2)
   end
 
 end
