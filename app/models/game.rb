@@ -30,11 +30,26 @@ class Game < ActiveRecord::Base
     # iterate over each piece
     opponents.each do |opponent_piece|
       # check if the piece can move to new_x, new_y
-      if opponent_piece.valid_move?(new_x, new_y)
+      if opponent_piece.valid_move?(new_x, new_y) 
         return true
       end
     end
     return false
+  end
+
+  def capture_move?(game_piece, new_x, new_y)
+    #define the captured piece on new position
+    captured_piece = self.game_pieces.where(:x => new_x, :y => new_y).first
+
+    #get enemy's user id
+    enemy_id = get_enemy_of(game_piece.id)
+    if captured_piece && captured_piece.user_id == enemy_id
+      captured_piece.update_attributes(:x => nil, :y => nil, :alive => false)
+      p captured_piece
+      return true
+    end
+    return false
+
   end
 
   # NOTE you could pass a king in here instead too...

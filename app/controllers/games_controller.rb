@@ -46,7 +46,13 @@ class GamesController < ApplicationController
     new_x = params[:new_x].to_i
     new_y = params[:new_y].to_i
     # TODO: check if the new x & y values are in bounds
-    if !@game.is_obstructed?(@game_piece, new_x, new_y) && @game_piece.valid_move?(new_x, new_y)
+    if !@game.is_obstructed?(@game_piece, new_x, new_y) && @game_piece.valid_move?(new_x, new_y) 
+
+      #Capture piece if capture_move? return true
+      if @game.capture_move?(@game_piece, new_x, new_y)
+        move_save(new_x, new_y)
+      end
+
       # TODO if the piece is a king, it cannot be moved into check
       if @game_piece.type == 'King'
         p @game_piece.user_id
@@ -57,7 +63,7 @@ class GamesController < ApplicationController
           flash[:notice] = "King cannot be moved in check position!"
         end
       else
-       move_save(new_x, new_y)
+          move_save(new_x, new_y)
       end
     else
       # can't move there!
