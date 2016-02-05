@@ -93,6 +93,17 @@ class GamesController < ApplicationController
   def move_save(new_x, new_y)
     @game_piece.move_to(new_x, new_y)
     @game_piece.save
+    
+    if @game.check_mate?(current_user)
+      p 'check mate'
+      flash[:notice] = "checkmate"
+      # TODO:handle game Over. 
+      # TODO:handle win
+    elsif @game.in_check(current_user)
+      p 'check'
+      flash[:notice] = "check"
+    end
+    
   end
 
 end
