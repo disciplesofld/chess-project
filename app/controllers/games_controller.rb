@@ -33,7 +33,7 @@ class GamesController < ApplicationController
   end
 
   def select
-    @game = Game.find(params[:id])
+    @game = Game.find(params[:id]) # blah blah blah
     @game_pieces = @game.game_pieces
     @game_piece = GamePiece.find(params[:game_piece_id])
   end
