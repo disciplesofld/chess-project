@@ -46,7 +46,7 @@ class GamesController < ApplicationController
     new_x = params[:new_x].to_i
     new_y = params[:new_y].to_i
     # TODO: check if the new x & y values are in bounds
-    if !@game.is_obstructed?(@game_piece, new_x, new_y) && @game_piece.valid_move?(new_x, new_y) 
+    if !@game.is_obstructed?(@game_piece, new_x, new_y) && @game_piece.valid_move?(new_x, new_y)
 
       #Capture piece if capture_move? return true
       if @game.capture_move?(@game_piece, new_x, new_y)
@@ -99,17 +99,17 @@ class GamesController < ApplicationController
   def move_save(new_x, new_y)
     @game_piece.move_to(new_x, new_y)
     @game_piece.save
-    
+
     if @game.check_mate?(current_user)
       p 'check mate'
       flash[:notice] = "checkmate"
-      # TODO:handle game Over. 
+      # TODO:handle game Over.
       # TODO:handle win
     elsif @game.in_check(current_user)
       p 'check'
       flash[:notice] = "check"
     end
-    
+
   end
 
 end
