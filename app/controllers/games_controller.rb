@@ -33,7 +33,7 @@ class GamesController < ApplicationController
   end
 
   def select
-    @game = Game.find(params[:id])
+    @game = Game.find(params[:id]) # blah blah blah
     @game_pieces = @game.game_pieces
     @game_piece = GamePiece.find(params[:game_piece_id])
   end
@@ -46,7 +46,13 @@ class GamesController < ApplicationController
     new_x = params[:new_x].to_i
     new_y = params[:new_y].to_i
     # TODO: check if the new x & y values are in bounds
-    if !@game.is_obstructed?(@game_piece, new_x, new_y) && @game_piece.valid_move?(new_x, new_y)
+    if !@game.is_obstructed?(@game_piece, new_x, new_y) && @game_piece.valid_move?(new_x, new_y) 
+
+      #Capture piece if capture_move? return true
+      if @game.capture_move?(@game_piece, new_x, new_y)
+        move_save(new_x, new_y)
+      end
+
       # TODO if the piece is a king, it cannot be moved into check
       if @game_piece.type == 'King'
         p @game_piece.user_id
@@ -57,7 +63,7 @@ class GamesController < ApplicationController
           flash[:notice] = "King cannot be moved in check position!"
         end
       else
-       move_save(new_x, new_y)
+          move_save(new_x, new_y)
       end
     else
       # can't move there!
@@ -93,6 +99,17 @@ class GamesController < ApplicationController
   def move_save(new_x, new_y)
     @game_piece.move_to(new_x, new_y)
     @game_piece.save
+    
+    if @game.check_mate?(current_user)
+      p 'check mate'
+      flash[:notice] = "checkmate"
+      # TODO:handle game Over. 
+      # TODO:handle win
+    elsif @game.in_check(current_user)
+      p 'check'
+      flash[:notice] = "check"
+    end
+    
   end
 
 end

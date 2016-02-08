@@ -21,7 +21,14 @@ class Game < ActiveRecord::Base
       return player_black_id
     end
   end
-
+  
+  def get_enemy_king(player_id)
+    # get enemy player...
+    enemy = get_enemy_of(player_id.id)
+    # get king position of player_id's king
+    return (self.game_pieces.where("type = ? AND user_id=?", 'King', enemy)).first
+  end
+  
   # return true if player can attack new_x, new_x
   def can_attack?(player, new_x, new_y)
     # get all of the pieces alive for this player in this game
@@ -30,23 +37,51 @@ class Game < ActiveRecord::Base
     # iterate over each piece
     opponents.each do |opponent_piece|
       # check if the piece can move to new_x, new_y
-      if opponent_piece.valid_move?(new_x, new_y)
+      if opponent_piece.valid_move?(new_x, new_y) 
         return true
       end
     end
     return false
   end
 
+  def capture_move?(game_piece, new_x, new_y)
+    #define the captured piece on new position
+    captured_piece = self.game_pieces.where(:x => new_x, :y => new_y).first
+
+    #get enemy's user id
+    enemy_id = get_enemy_of(game_piece.id)
+    if captured_piece && captured_piece.user_id == enemy_id
+      captured_piece.update_attributes(:x => nil, :y => nil, :alive => false)
+      p captured_piece
+      return true
+    end
+    return false
+
+  end
+
   # NOTE you could pass a king in here instead too...
   def in_check?(player_id)
-    # get king position of player_id's king
-    king = (self.game_pieces.where("type = ? AND user_id=?", 'King', player_id)).first
-
-    # get enemy player...
-    enemy = get_enemy_of(player_id.id)
+    # get enemy king
+    king = get_enemy_king(player_id)
 
     # call can_attack and return the right value
-    return can_attack?(enemy, king.x, king.y)
+    return can_attack?(player_id, king.x, king.y)
+  end
+  
+  def check_mate?(player_id)
+    check_mate = false
+    king = get_enemy_king(player_id)
+    x = king.x
+    y = king.y
+    #get enemy king's valid move locations
+    valid_indices = [[x-1,y+1], [x-1,y],[x-1,y-1], [x,y-1], [x+1,y-1], [x+1,y], [x+1,y+1], [x,y+1]]
+    #call can_attack on each of the above positions
+    valid_indices.each do |i|
+      if !can_attack?(player_id, i[0], i[1])
+        return false
+      end
+    end
+    return true
   end
 
   def is_obstructed?(gamepiece, new_x, new_y)
