@@ -23,17 +23,31 @@ class Pawn < GamePiece
     end
   end
 
+  def piece_to_capture(new_x, new_y) # I can remove this logic now (called from games controller)
+    # Find if opponent in new vertices
+    foe_id = self.game.get_enemy_of(self.user_id) # Returns player_id of opponent
+    self.game.game_pieces.where("x = ? AND y = ? AND user_id = ?", new_x, new_y, foe_id).first
+  end
+
   def diagonal_taking_move(new_x, new_y)
-    # Logic for single diagonal move to take opponent piece - ADD SELF.MOVED HERE!!!!
-    if (new_x == self.x - 1 || new_x == self.x + 1) && piece_to_capture(new_x, new_y)
+    # Logic for single diagonal move to take opponent piece
+    if (new_x == self.x - 1 || new_x == self.x + 1) && piece_to_capture(new_x, new_y) # FROM HERE, call the method in game model
       (pawn_white? && new_y == self.y + 1) || new_y == self.y - 1
     end
   end
 
-  def piece_to_capture(new_x, new_y)
-    # Find if opponent in new vertices
-    foe_id = self.game.get_enemy_of(self.user_id) # Returns player_id of opponent
-    self.game.game_pieces.where("x = ? AND y = ? AND user_id = ?", new_x, new_y, foe_id).first
+  def en_passant
+    # PUT THIS IN GAME.RB LOGIC - will track last move
+    # MAKE moved into an integer - to track if first single move or first double move
+    # Check for if last move was opponent's pawn first move & moved 2 spaces
+    piece = self.game.game_pieces.order(:updated_at).last
+    piece.type == "Pawn" && piece.user_id != current_user.id
+
+    if pawn_white? && piece
+    # Check if opponent's pawn now sits next to self
+    # Can move diagonally & take opponent's pawn
+
+    # Then call this "true" from game_piece/game model
   end
 
   def pawn_white? # Determine pawn team
