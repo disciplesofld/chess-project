@@ -16,19 +16,19 @@ class Game < ActiveRecord::Base
   # return the player object of the other player
   def get_enemy_of(player_id)
     if !(player_white_id == player_id)
-      return player_white_id 
+      return player_white_id
     else
       return player_black_id
     end
   end
-  
+
   def get_enemy_king(player_id)
     # get enemy player...
     enemy = get_enemy_of(player_id.id)
     # get king position of player_id's king
     return (self.game_pieces.where("type = ? AND user_id=?", 'King', enemy)).first
   end
-  
+
   # return true if player can attack new_x, new_x
   def can_attack?(player, new_x, new_y)
     # get all of the pieces alive for this player in this game
@@ -37,7 +37,7 @@ class Game < ActiveRecord::Base
     # iterate over each piece
     opponents.each do |opponent_piece|
       # check if the piece can move to new_x, new_y
-      if opponent_piece.valid_move?(new_x, new_y) 
+      if opponent_piece.valid_move?(new_x, new_y)
         return true
       end
     end
@@ -45,6 +45,8 @@ class Game < ActiveRecord::Base
   end
 
   def capture_move?(game_piece, new_x, new_y)
+    # If en passant (&& if pawn) - DIFFERENT CAPTURE
+
     #define the captured piece on new position
     captured_piece = self.game_pieces.where(:x => new_x, :y => new_y).first
 
@@ -52,7 +54,7 @@ class Game < ActiveRecord::Base
     enemy_id = get_enemy_of(game_piece.id)
     if captured_piece && captured_piece.user_id == enemy_id
       captured_piece.update_attributes(:x => nil, :y => nil, :alive => false)
-      p captured_piece
+      # p captured_piece
       return true
     end
     return false
@@ -67,7 +69,7 @@ class Game < ActiveRecord::Base
     # call can_attack and return the right value
     return can_attack?(player_id, king.x, king.y)
   end
-  
+
   def check_mate?(player_id)
     check_mate = false
     king = get_enemy_king(player_id)
