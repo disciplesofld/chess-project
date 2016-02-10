@@ -2,10 +2,9 @@ class GamePiece < ActiveRecord::Base
   belongs_to :game
   belongs_to :user
 
-
   def move_to(new_x, new_y)
-
-      self.update_attributes(:x => new_x, :y => new_y)
+      move_count = self.moved + 1
+      self.update_attributes(:x => new_x, :y => new_y, :moved => move_count)
   end
 
   def valid_move?(new_x, new_y)
@@ -13,9 +12,6 @@ class GamePiece < ActiveRecord::Base
     false
   end
 
-
-
-  
   # def can_be_captured?
   #       #define the piece on new posistion
   #   opponent = self.game.game_pieces.where(:x => new_x, :y => new_y).first
@@ -25,7 +21,7 @@ class GamePiece < ActiveRecord::Base
   #   end
 
   #   if friend_enemy.present? && self.user_id != friend_enemy.user_id
-  #     friend_enemy.update_attributes(:x => nil, :y => nil, :status => 0)  
+  #     friend_enemy.update_attributes(:x => nil, :y => nil, :status => 0)
   #     self.update_attributes(:x => new_x, :y => new_y)
   #   elsif friend_enemy.present? && self.user_id == friend_enemy.user_id
   #     return false
