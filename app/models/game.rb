@@ -45,14 +45,16 @@ class Game < ActiveRecord::Base
   end
 
   def capture_move?(game_piece, new_x, new_y)
-    # If en passant (&& if pawn) - DIFFERENT CAPTURE
-
-    #define the captured piece on new position
-    captured_piece = self.game_pieces.where(:x => new_x, :y => new_y).first
-
+    if game_piece.type == "Pawn" && game_piece.can_passant_capture
+      captured_piece = self.game_pieces.order(:updated_at).last
+    else
+      #define the captured piece on new position
+      captured_piece = self.game_pieces.where(:x => new_x, :y => new_y).first
+    end
     #get enemy's user id
-    enemy_id = get_enemy_of(game_piece.id)
-    if captured_piece && captured_piece.user_id == enemy_id
+    # NOTE: This did not work; commented it out & repaired functionality [S.E.]
+    # enemy_id = get_enemy_of(game_piece.id)
+    if captured_piece && captured_piece.user_id != game_piece.user_id # enemy_id - Did not work for white taking black
       captured_piece.update_attributes(:x => nil, :y => nil, :alive => false)
       # p captured_piece
       return true
