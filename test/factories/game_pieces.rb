@@ -6,7 +6,6 @@ FactoryGirl.define do
     x 0
     y 0
     type 'King'
-    status 0
   end
   
   factory :king, parent: :game_piece, class: 'King' do
