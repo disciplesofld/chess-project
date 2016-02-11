@@ -3,6 +3,11 @@ class Game < ActiveRecord::Base
   belongs_to :player_white, :class_name => "User", :foreign_key => "player_white_id"
   belongs_to :player_black, :class_name => "User", :foreign_key => "player_black_id"
 
+  # Checks for last player
+  def last_player
+    self.game_pieces.order(:updated_at).last
+  end
+
   def populate_pieces!
     game_piece_rank = ["Rook", "Knight", "Bishop", "Queen", "King", "Bishop", "Knight", "Rook"]
     (0..7).each do |i|
