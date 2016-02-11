@@ -15,6 +15,7 @@ class GamesController < ApplicationController
     elsif  @game.player_black_id == -1
       @resign_message = "Player White Won! (Player Black Has Left the Match)"
     end
+
   end
 
   def create
@@ -69,6 +70,11 @@ class GamesController < ApplicationController
       # can't move there!
       flash[:notice] = "Invalid move"
     end
+    base_uri = 'https://vivid-heat-2313.firebaseIO.com/'
+    firebase = Firebase::Client.new(base_uri)
+    response = firebase.set("#{@game.id}",  :created => Firebase::ServerValue::TIMESTAMP)
+    # response.success? # => true
+
     redirect_to game_path
   end
 
