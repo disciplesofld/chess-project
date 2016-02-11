@@ -1,11 +1,12 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="https://cdn.firebase.com/js/client/2.4.0/firebase.js"></script>
 <style>
   .draggable.ui-draggable-dragging {color: gray;}
 </style>
+<div id="timestamp" data-time-stamp="<%= (Time.now.to_f * 1000).to_i %>"></div>
 <script>
-
 $( init );
 
 var piece_id, x_coord_new, y_coord_new;
@@ -19,6 +20,7 @@ function init() {
     drop: handleDropEvent
   });
 }
+
 
 function handleDragEvent( event, ui ) {
   var draggable = ui.draggable;
@@ -36,6 +38,7 @@ function handleDragEvent( event, ui ) {
   $('#move').submit();  
   // get the destination coordinate
   //alert( 'Dragged!' +  "(ID = " + piece_id + ")");
+
 }
 
 function handleDropEvent( event, ui ) {
@@ -48,6 +51,28 @@ function handleDropEvent( event, ui ) {
   //alert( 'Dropped!' +  "(" + x_coord_new + ", " + y_coord_new + ")");
 }
 
+// firebase_path is hardcoded.  Firebase account is created and 
+// https://vivid-heat-2313.firebaseio.com/ link is provided.
+// when a game piece moves, timestamp is created in database inside the link.
+// the idea is that to get this timestamp inside firebase and 
+// compare the time when this show.html is refreshed and refresh 
+// the browser if necessary.  
+var firebase_path = 'https://vivid-heat-2313.firebaseio.com/' + '<%=@game.id%>' + "/";
+var myDataRef = new Firebase(firebase_path);
+// load current time (id = timestamp is defined on line 8)
+var load_time_stamp = $('#timestamp').data('time-stamp');
+//console.log("load_time_stamp is " + load_time_stamp);
+
+// the statement below grabs the timestamp "created" from firebase database.
+myDataRef.on('value', function(snapshot) {
+  data = snapshot.val();
+  var time_fb = data.created;
+  //console.log("time_fb is " + time_fb);
+  if (time_fb > load_time_stamp) {
+    location.reload();
+  }
+}); 
+
 </script>
 <div id="board" class="col-xs-10 col-xs-offset-1">
   <% if @resign_message != nil %>
@@ -55,7 +80,6 @@ function handleDropEvent( event, ui ) {
     <h3><%= link_to 'Go back to Game Dashboard', games_path %></h3>
   <% end %>
   <div class="results">
-    <!-- Obtain action path from javascript.-->
     <%= form_tag '', :id => "move"%>
   </div>
   <table class="droppable">
