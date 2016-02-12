@@ -3,6 +3,34 @@ class Game < ActiveRecord::Base
   belongs_to :player_white, :class_name => "User", :foreign_key => "player_white_id"
   belongs_to :player_black, :class_name => "User", :foreign_key => "player_black_id"
 
+  # Checks for last updated piece
+  def last_piece
+    self.game_pieces.order(:updated_at).last
+  end
+
+  # User a player of this game?
+  def check_users(current_user)
+    [self.player_white, self.player_black].include? current_user
+  end
+
+  # Player owns piece being moved?
+  def check_player(gamepiece, current_user, new_x, new_y)
+    gamepiece.user_id == current_user.id && self.player_move(gamepiece, new_x, new_y)
+  end
+
+  # Establishes first move (player white), & which player's move
+  def player_move(gamepiece, new_x, new_y)
+    false
+    last_moved = self.last_piece
+    if last_moved.moved == 0 && last_moved.user_id != self.player_white_id && self.player_white_id == gamepiece.user_id
+      !self.is_obstructed?(gamepiece, new_x, new_y)
+    elsif last_moved.moved > 0 && last_moved.user_id != gamepiece.user_id
+      !self.is_obstructed?(gamepiece, new_x, new_y)
+    else
+      false
+    end
+  end
+
   def populate_pieces!
     if (self.game_pieces.where(game_id: self.id).take.nil?)
       game_piece_rank = ["Rook", "Knight", "Bishop", "Queen", "King", "Bishop", "Knight", "Rook"]
