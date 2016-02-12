@@ -8,6 +8,24 @@ class Game < ActiveRecord::Base
     self.game_pieces.order(:updated_at).last
   end
 
+  # Is user one of the players of this game?
+  def check_players(current_user)
+    [self.player_white, self.player_black].include? current_user
+  end
+
+  # Establishes first move (player white), then all following
+  def player_move(gamepiece, new_x, new_y)
+    false
+    first_piece = self.game_pieces.order(:updated_at).last
+    if first_piece.moved == 0 && first_piece.user_id != self.player_white_id && self.player_white_id == gamepiece.user_id
+      !self.is_obstructed?(gamepiece, new_x, new_y)
+    elsif first_piece.moved > 0
+      !self.is_obstructed?(gamepiece, new_x, new_y)
+    else
+      false
+    end
+  end
+
   def populate_pieces!
     game_piece_rank = ["Rook", "Knight", "Bishop", "Queen", "King", "Bishop", "Knight", "Rook"]
     (0..7).each do |i|

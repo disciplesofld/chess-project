@@ -1,5 +1,4 @@
 class GamesController < ApplicationController
-
   before_action :authenticate_user!
 
   def index
@@ -45,9 +44,8 @@ class GamesController < ApplicationController
     # NOTE converting to integer here saves you from having to do it in every piece
     new_x = params[:new_x].to_i
     new_y = params[:new_y].to_i
-    # TODO: check if the new x & y values are in bounds
-    if !@game.is_obstructed?(@game_piece, new_x, new_y) && @game_piece.valid_move?(new_x, new_y)
 
+    if @game.player_move(@game_piece, new_x, new_y) && @game_piece.valid_move?(new_x, new_y)
       #Capture piece if capture_move? return true
       if @game.capture_move?(@game_piece, new_x, new_y)
         move_save(new_x, new_y)
