@@ -3,23 +3,28 @@ class Game < ActiveRecord::Base
   belongs_to :player_white, :class_name => "User", :foreign_key => "player_white_id"
   belongs_to :player_black, :class_name => "User", :foreign_key => "player_black_id"
 
-  # Checks for last player
-  def last_player
+  # Checks for last updated piece
+  def last_piece
     self.game_pieces.order(:updated_at).last
   end
 
-  # Is user one of the players of this game?
-  def check_players(current_user)
+  # User a player of this game?
+  def check_users(current_user)
     [self.player_white, self.player_black].include? current_user
   end
 
-  # Establishes first move (player white), then all following
+  # Player owns piece being moved?
+  def check_player(gamepiece, current_user, new_x, new_y)
+    gamepiece.user_id == current_user.id && self.player_move(gamepiece, new_x, new_y)
+  end
+
+  # Establishes first move (player white), & which player's move
   def player_move(gamepiece, new_x, new_y)
     false
-    first_piece = self.game_pieces.order(:updated_at).last
-    if first_piece.moved == 0 && first_piece.user_id != self.player_white_id && self.player_white_id == gamepiece.user_id
+    last_moved = self.last_piece
+    if last_moved.moved == 0 && last_moved.user_id != self.player_white_id && self.player_white_id == gamepiece.user_id
       !self.is_obstructed?(gamepiece, new_x, new_y)
-    elsif first_piece.moved > 0
+    elsif last_moved.moved > 0 && last_moved.user_id != gamepiece.user_id
       !self.is_obstructed?(gamepiece, new_x, new_y)
     else
       false

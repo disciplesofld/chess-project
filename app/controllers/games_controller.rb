@@ -45,7 +45,7 @@ class GamesController < ApplicationController
     new_x = params[:new_x].to_i
     new_y = params[:new_y].to_i
 
-    if @game.player_move(@game_piece, new_x, new_y) && @game_piece.valid_move?(new_x, new_y)
+    if @game.check_player(@game_piece, current_user, new_x, new_y) && @game_piece.valid_move?(new_x, new_y)
       #Capture piece if capture_move? return true
       if @game.capture_move?(@game_piece, new_x, new_y)
         move_save(new_x, new_y)

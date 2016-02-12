@@ -14,7 +14,7 @@
             <% else %>
               <b>(waiting for an opponent)</b>
             <% end %>
-            <% if game.last_player && game.last_player.user_id != current_user.id %>
+            <% if game.last_piece && game.last_piece.user_id != current_user.id %>
               <b>&nbsp;&nbsp;[Your move]</b>
             <% end %>
           </span>
