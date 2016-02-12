@@ -44,6 +44,8 @@ end
 
 gem 'jquery-ui-rails'
 
+gem 'firebase'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

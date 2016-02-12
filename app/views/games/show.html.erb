@@ -3,61 +3,83 @@
   <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
   <script src="//code.jquery.com/jquery-1.10.2.js"></script>
   <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <script src="https://cdn.firebase.com/js/client/2.4.0/firebase.js"></script>
   <style>
     .draggable.ui-draggable-dragging {color: gray;}
   </style>
+  <div id="timestamp" data-time-stamp="<%= (Time.now.to_f * 1000).to_i %>"></div>
   <script>
+    $( init );
 
-  $( init );
+    var piece_id, x_coord_new, y_coord_new;
 
-  var piece_id, x_coord_new, y_coord_new;
+    function init() {
 
-  function init() {
+      $('.draggable').draggable( {
+        stop: handleDragEvent
+      });
+      $('.droppable td').droppable( {
+        drop: handleDropEvent
+      });
+    }
 
-    $('.draggable').draggable( {
-      stop: handleDragEvent
+    function handleDragEvent( event, ui ) {
+      var draggable = ui.draggable;
+      piece_id = $(this).attr("id");
+      var game_id= '<%=@game.id%>';
+      //console.log("game_id is " + game_id);
+      //console.log("piece_id is " + piece_id);
+      //console.log("event taget is is" + event.target.id)
+      //console.log("x_coord_new is " + x_coord_new + " and y_coord_new is " + y_coord_new);
+      var path = "/games/" + game_id + "/" + piece_id + "/" + x_coord_new + "/" + y_coord_new;
+
+      $('#move').attr({
+        'action': path
+      });
+      $('#move').submit();
+      // get the destination coordinate
+      //alert( 'Dragged!' +  "(ID = " + piece_id + ")");
+    }
+
+    function handleDropEvent( event, ui ) {
+      var draggable = ui.draggable;
+      var droppableID = $(this).attr("id");
+      //console.log("droppable id is " + droppableID);
+      // get the destination coordinate
+      x_coord_new = droppableID.charAt(droppableID.length-2);
+      y_coord_new = droppableID.charAt(droppableID.length-1);
+      //alert( 'Dropped!' +  "(" + x_coord_new + ", " + y_coord_new + ")");
+    }
+
+    // firebase_path is hardcoded.  Firebase account is created and
+    // https://vivid-heat-2313.firebaseio.com/ link is provided.
+    // when a game piece moves, timestamp is created in database inside the link.
+    // the idea is that to get this timestamp inside firebase and
+    // compare the time when this show.html is refreshed and refresh
+    // the browser if necessary.
+    var firebase_path = 'https://vivid-heat-2313.firebaseio.com/' + '<%=@game.id%>' + "/";
+    var myDataRef = new Firebase(firebase_path);
+    // load current time (id = timestamp is defined on line 8)
+    var load_time_stamp = $('#timestamp').data('time-stamp');
+    //console.log("load_time_stamp is " + load_time_stamp);
+
+    // the statement below grabs the timestamp "created" from firebase database.
+    myDataRef.on('value', function(snapshot) {
+      data = snapshot.val();
+      var time_fb = data.created;
+      //console.log("time_fb is " + time_fb);
+      if (time_fb > load_time_stamp) {
+        location.reload();
+      }
     });
-    $('.droppable td').droppable( {
-      drop: handleDropEvent
-    });
-  }
-
-  function handleDragEvent( event, ui ) {
-    var draggable = ui.draggable;
-    piece_id = $(this).attr("id");
-    var game_id= '<%=@game.id%>';
-    //console.log("game_id is " + game_id);
-    //console.log("piece_id is " + piece_id);
-    //console.log("event taget is is" + event.target.id)
-    //console.log("x_coord_new is " + x_coord_new + " and y_coord_new is " + y_coord_new);
-    var path = "/games/" + game_id + "/" + piece_id + "/" + x_coord_new + "/" + y_coord_new;
-
-    $('#move').attr({
-      'action': path
-    });
-    $('#move').submit();
-    // get the destination coordinate
-    //alert( 'Dragged!' +  "(ID = " + piece_id + ")");
-  }
-
-  function handleDropEvent( event, ui ) {
-    var draggable = ui.draggable;
-    var droppableID = $(this).attr("id");
-    //console.log("droppable id is " + droppableID);
-    // get the destination coordinate
-    x_coord_new = droppableID.charAt(droppableID.length-2);
-    y_coord_new = droppableID.charAt(droppableID.length-1);
-    //alert( 'Dropped!' +  "(" + x_coord_new + ", " + y_coord_new + ")");
-  }
 
   </script>
-  <div id="board" class="col-xs-10 col-xs-offset-1 col-md-7">
+  <div id="board" class="col-xs-10 col-xs-offset-1">
     <% if @resign_message != nil %>
       <h1><%= @resign_message %></h1>
       <h3><%= link_to 'Go back to Game Dashboard', games_path %></h3>
     <% end %>
     <div class="results">
-      <!-- Obtain action path from javascript.-->
       <%= form_tag '', :id => "move"%>
     </div>
     <table class="droppable">
@@ -119,6 +141,6 @@
       <% end %>
     </div>
 
-  <% else %>
-    <% flash[:alert] = "Access denied. This is not the game you are looking for." %>
-  <% end %>
+<% else %>
+  <% flash[:alert] = "Access denied. This is not the game you are looking for." %>
+<% end %>

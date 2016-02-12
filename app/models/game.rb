@@ -32,12 +32,14 @@ class Game < ActiveRecord::Base
   end
 
   def populate_pieces!
-    game_piece_rank = ["Rook", "Knight", "Bishop", "Queen", "King", "Bishop", "Knight", "Rook"]
-    (0..7).each do |i|
-      game_pieces << (game_piece_rank[i].constantize).new(x: i, y: 0, game_id: self.id, user_id: player_white_id)  #player 1
-      game_pieces << Pawn.new(x: i, y: 1, game_id: self.id, user_id: player_white_id)  #player 1
-      game_pieces << (game_piece_rank[i].constantize).new(x: i, y: 7, game_id: self.id, user_id: player_black_id)  #player 2
-      game_pieces << Pawn.new(x: i, y: 6, game_id: self.id, user_id: player_black_id)  #player 2
+    if (self.game_pieces.where(game_id: self.id).take.nil?)
+      game_piece_rank = ["Rook", "Knight", "Bishop", "Queen", "King", "Bishop", "Knight", "Rook"]
+      (0..7).each do |i|
+        game_pieces << (game_piece_rank[i].constantize).new(x: i, y: 0, game_id: self.id, user_id: player_white_id)  #player 1
+        game_pieces << Pawn.new(x: i, y: 1, game_id: self.id, user_id: player_white_id)  #player 1
+        game_pieces << (game_piece_rank[i].constantize).new(x: i, y: 7, game_id: self.id, user_id: player_black_id)  #player 2
+        game_pieces << Pawn.new(x: i, y: 6, game_id: self.id, user_id: player_black_id)  #player 2
+      end
     end
   end
 
