@@ -33,7 +33,7 @@ function handleDragEvent( event, ui ) {
   $('#move').attr({
     'action': path
   });
-  $('#move').submit();  
+  $('#move').submit();
   // get the destination coordinate
   //alert( 'Dragged!' +  "(ID = " + piece_id + ")");
 }
@@ -49,7 +49,7 @@ function handleDropEvent( event, ui ) {
 }
 
 </script>
-<div id="board" class="col-xs-10 col-xs-offset-1">
+<div id="board" class="col-xs-10 col-xs-offset-1 col-md-7">
   <% if @resign_message != nil %>
     <h1><%= @resign_message %></h1>
     <h3><%= link_to 'Go back to Game Dashboard', games_path %></h3>
@@ -66,7 +66,7 @@ function handleDropEvent( event, ui ) {
         </th>
         <% (0..7).each do |col| %>
           <% square_id = "square" + col.to_s + index.to_s %>
-          <td id= "<%= square_id %>">   
+          <td id= "<%= square_id %>">
               <% @game_pieces.each do |game_piece| %>
                 <% if game_piece.x == col && game_piece.y == index %>
                   <% if @resign_message == nil %>
@@ -75,7 +75,7 @@ function handleDropEvent( event, ui ) {
                     <% else %>
                       <span class="icon black">
                     <% end %>
-                  
+
                     <div class="draggable" id= "<%= game_piece.id %>">
                       <%= game_piece.icon %>
                     </div>
@@ -100,8 +100,19 @@ function handleDropEvent( event, ui ) {
       </tr>
     </tfoot>
   </table>
-  <br />
-  <% if @resign_message == nil %>
-    <%= link_to 'Resign', game_path(@game), :method => :delete, :data => {:confirm => 'Are you sure you want to resign this game?'}, :class => 'btn btn-primary' %>
-  <% end %>
 </div>
+
+<div class="col-xs-12 col-md-4">
+  <div class="turn">
+    <% if @game.last_player && @game.last_player.user_id != @game.player_black_id %>
+      <p><%= @game.player_black.email[/[^@]+/] %>: black move</p>
+    <% else %>
+      <p class="white-move"><%= @game.player_white.email[/[^@]+/] %>: white move</p>
+    <% end %>
+    </div>
+  </div>
+  <div class="resign">
+    <% if @resign_message == nil %>
+      <%= link_to 'Resign', game_path(@game), :method => :delete, :data => {:confirm => 'Are you sure you want to resign this game?'}, :class => 'btn btn-primary' %>
+    <% end %>
+  </div>
