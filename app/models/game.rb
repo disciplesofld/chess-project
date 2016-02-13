@@ -67,7 +67,7 @@ class Game < ActiveRecord::Base
     # iterate over each piece
     opponents.each do |opponent_piece|
       # check if the piece can move to new_x, new_y
-      if opponent_piece.valid_move?(new_x, new_y)
+      if opponent_piece.valid_move?(new_x, new_y) && !self.is_obstructed?(opponent_piece, new_x, new_y)
         return true
       end
     end
