@@ -6,7 +6,15 @@ class GamesController < ApplicationController
   end
 
   def show
+    # Determine if the game is won
+    @winner = nil
     @game = Game.find(params[:id])
+    @users = User.all
+    won = @game.won
+    if won != nil
+      @winner = @users.find(@game.won).email
+    end
+    
     @game_pieces = @game.game_pieces
     @resign_message = nil
     if @game.player_white_id == -1
@@ -54,7 +62,6 @@ class GamesController < ApplicationController
 
       # TODO if the piece is a king, it cannot be moved into check
       if @game_piece.type == 'King'
-        # p @game_piece.user_id
         opponent = @game.get_enemy_of(@game_piece.user_id)
         if !@game.can_attack?(opponent, new_x, new_y)
           move_save(new_x, new_y)
@@ -105,13 +112,12 @@ class GamesController < ApplicationController
     @game_piece.save
 
     if @game.check_mate?(current_user)
-      p 'check mate'
-      flash[:notice] = "checkmate"
-      # TODO:handle game Over.
-      # TODO:handle win
+      flash[:error] = "checkmate"
+      @winner = (@game.player_black == current_user)? @game.player_black : @game.player_white
+      flash[:notice] = "Game Over"
+      @game.save_winner(@winner.id)
     elsif @game.in_check?(current_user)
-      p 'check'
-      flash[:notice] = "check"
+      flash[:error] = "check"
     end
 
   end

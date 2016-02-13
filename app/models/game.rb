@@ -111,13 +111,19 @@ class Game < ActiveRecord::Base
     valid_indices = [[x-1,y+1], [x-1,y],[x-1,y-1], [x,y-1], [x+1,y-1], [x+1,y], [x+1,y+1], [x,y+1]]
     #call can_attack on each of the above positions
     valid_indices.each do |i|
-      if !can_attack?(player_id, i[0], i[1])
-        return false
+      if !(i[0] < 0) && !(i[0] > 7) && !(i[1] < 0) && !(i[1] > 7)
+        p "will check for valide move with the following indices"
+        if king.valid_move?(i[0], i[1]) && !self.is_obstructed?(king, i[0], i[1])
+          p "Not obstructed"
+          if !can_attack?(player_id, i[0], i[1])
+            return false
+          end
+        end
       end
     end
     return true
   end
-
+  
   def is_obstructed?(gamepiece, new_x, new_y)
     # from game_controller.rb, this should probably be called :
     # if !@game.is_obstructed?(@game_piece, @new_x, @new_y)

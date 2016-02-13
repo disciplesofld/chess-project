@@ -40,6 +40,7 @@ gem 'spring', '<= 1.6',     group: :development
 
 group :development do
   gem 'pry-rails'
+  gem 'quiet_assets'
 end
 
 gem 'jquery-ui-rails'
