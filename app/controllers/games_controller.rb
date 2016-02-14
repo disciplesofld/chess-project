@@ -94,7 +94,7 @@ class GamesController < ApplicationController
       @game.player_black_id = -1
       flash[:notice] = "Player White Won!"
     end
-    @game.save
+    @game.destroy
     # to-do
     # need to add code here for a winning player
     # (points add?  number of winning game added for a winner?)
@@ -111,12 +111,12 @@ class GamesController < ApplicationController
     @game_piece.move_to(new_x, new_y)
     @game_piece.save
 
-    if @game.check_mate?(current_user)
+    if @game.check_mate?(@game_piece.user_id)
       flash[:error] = "checkmate"
       @winner = (@game.player_black == current_user)? @game.player_black : @game.player_white
       flash[:notice] = "Game Over"
       @game.save_winner(@winner.id)
-    elsif @game.in_check?(current_user)
+    elsif @game.in_check?(@game_piece.user_id)
       flash[:error] = "check"
     end
 
