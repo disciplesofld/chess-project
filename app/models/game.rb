@@ -54,7 +54,7 @@ class Game < ActiveRecord::Base
 
   def get_enemy_king(player_id)
     # get enemy player...
-    enemy = get_enemy_of(player_id.id)
+    enemy = get_enemy_of(player_id)
     # get king position of player_id's king
     return (self.game_pieces.where("type = ? AND user_id=?", 'King', enemy)).first
   end
@@ -67,7 +67,7 @@ class Game < ActiveRecord::Base
     # iterate over each piece
     opponents.each do |opponent_piece|
       # check if the piece can move to new_x, new_y
-      if opponent_piece.valid_move?(new_x, new_y)
+      if opponent_piece.valid_move?(new_x, new_y) && !self.is_obstructed?(opponent_piece, new_x, new_y)
         return true
       end
     end
@@ -104,20 +104,29 @@ class Game < ActiveRecord::Base
 
   def check_mate?(player_id)
     check_mate = false
+    valid_indices = false
     king = get_enemy_king(player_id)
     x = king.x
     y = king.y
     #get enemy king's valid move locations
-    valid_indices = [[x-1,y+1], [x-1,y],[x-1,y-1], [x,y-1], [x+1,y-1], [x+1,y], [x+1,y+1], [x,y+1]]
+    total_indices = [[x-1,y+1], [x-1,y],[x-1,y-1], [x,y-1], [x+1,y-1], [x+1,y], [x+1,y+1], [x,y+1]]
     #call can_attack on each of the above positions
-    valid_indices.each do |i|
-      if !can_attack?(player_id, i[0], i[1])
-        return false
+    total_indices.each do |i|
+      if !(i[0] < 0) && !(i[0] > 7) && !(i[1] < 0) && !(i[1] > 7) && !self.is_obstructed?(king, i[0], i[1])
+        valid_indices = true
+        if king.valid_move?(i[0], i[1]) 
+          if !can_attack?(player_id, i[0], i[1])
+            return false
+          end
+        end
       end
     end
-    return true
+    if valid_indices
+      return true
+    end
   end
 
+  
   def is_obstructed?(gamepiece, new_x, new_y)
     # from game_controller.rb, this should probably be called :
     # if !@game.is_obstructed?(@game_piece, @new_x, @new_y)

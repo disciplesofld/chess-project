@@ -82,6 +82,13 @@
     <div class="results">
       <%= form_tag '', :id => "move"%>
     </div>
+    
+    <div>
+      <% if @winner != nil %>
+       <%= link_to "#{@winner} WON!", game_path(@game), :method => :delete, :data => {:confirm => 'GAME OVER'}, :class => 'btn btn-primary' %>
+      <% end %>
+    </div>
+    
     <table class="droppable">
       <% ('a'..'h').to_enum.with_index.reverse_each do |letter, index| %>
         <tr>
