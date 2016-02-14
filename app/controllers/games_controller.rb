@@ -68,6 +68,16 @@ class GamesController < ApplicationController
         else
           flash[:notice] = "King cannot be moved in check position!"
         end
+      elsif @game_piece.type == 'Pawn'
+        # check if it reached y = 0 or y = 7
+        if new_y==0 || new_y == 7
+	        p "check if pawn reaches other end"
+	        # then change the type to queen.
+	        @game_piece.type = 'Queen'
+	        @game_piece = @game_piece.becomes(@game_piece.type.constantize)
+	      end
+	      # call move and save
+	      move_save(new_x, new_y)
       else
         move_save(new_x, new_y)
       end
