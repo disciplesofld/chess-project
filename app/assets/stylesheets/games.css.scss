@@ -26,7 +26,7 @@ td {
 }
 
 th {
-  background: white;
+  background: #a1aabd;
 }
 
 .foot {
@@ -34,17 +34,16 @@ th {
 }
 
 tfoot {
-  border-right: 1px white solid;
+  border-right: 1px solid #a1aabd;
 }
 
 .turn {
-	margin-left: -15px;
 	height: 690px;
 	font-weight: bold;
-	color: #7f86aa;
-	font-size: 2em;
+	color: #666;
+	font-size: 2.35em;
 }
 
 .white-move {
-	padding-top: 645px;
+	padding-top: 525px;
 }

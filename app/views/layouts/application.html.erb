@@ -1,65 +1,75 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>ChessProject</title>
+  <title>Chess: D of L&#38;D</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
   <meta name="viewport" content="initial-scale=1.0, width=device-width" />
 </head>
 <body>
+  <div id="wrap">
 
-<!-- devise notice & alert from here -->
-<% if notice.present? %>
-	<p class="alert alert-info"><%= notice %></p>
-<% end %>
-<% if alert.present? %>
-	<p class="alert alert-danger"><%= alert %></p>
-<% end %>
+  <!-- navbar from here -->
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <%= link_to 'D of L+D', root_path, :class => 'navbar-brand' %>
+      </div>
 
-<!--devise notice & alert end -->
-
-
-<!-- navbar from here -->
-
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <%= link_to 'CHESS', root_path, :class => 'navbar-brand' %>
-    </div>
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li>
+            <% if user_signed_in? %>
+            <%= link_to 'Game Dashboard', games_path %>
+            <% end %>
+          </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
           <% if user_signed_in? %>
-          <%= link_to 'Game Dashboard', games_path %>
+          	<li><%= link_to 'Sign Out', destroy_user_session_path, :method => :delete %></li>
+          	<% else %>
+          	<li><%= link_to 'Sign up', new_user_registration_path %></li>
+          	<li><%= link_to 'Sign in', new_user_session_path %></li>
           <% end %>
-        </li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <% if user_signed_in? %>
-        	<li><%= link_to 'Sign Out', destroy_user_session_path, :method => :delete %></li>
-        	<% else %>
-        	<li><%= link_to 'Sign up', new_user_registration_path %></li>
-        	<li><%= link_to 'Sign in', new_user_session_path %></li>
-        <% end %>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
+  <!-- navbar end -->
 
-<!-- navbar end -->
+  <!-- devise notice & alert from here -->
+  <% if notice.present? %>
+  	<div class="warn alert alert-info col-xs-8 col-xs-offset-2">
+      <%= notice %>
+    </div>
+  <% end %>
+  <% if alert.present? %>
+  	<div class="warn alert alert-danger col-xs-8 col-xs-offset-2">
+      <%= alert %>
+    </div>
+  <% end %>
+  <!--devise notice & alert end -->
 
+  <%= yield %>
+  <br class="clr" />
 
-<%= yield %>
+  </div> <!--  wrap -->
+
+  <div id="footer">
+    <div class="container">
+      <br />
+        <%= link_to 'View the Disciples @ GitHub', "https://github.com/disciplesofld/chess-project" %>
+    </div>
+  </div>
 
 </body>
 </html>
